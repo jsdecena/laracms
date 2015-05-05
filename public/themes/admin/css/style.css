@@ -1,0 +1,12 @@
+#checkbox-list
+{
+	list-style-type: none;
+	padding: 0px;
+	height: 108px;
+	overflow: auto;
+	border:1px solid #CCCCCC;
+}
+#checkbox-list li 
+{
+	padding:2px;
+}
