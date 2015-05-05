@@ -34,7 +34,7 @@ class UsersTableSeeder extends DatabaseSeeder {
             'firstname'     => 'John',
             'lastname'      => 'Doe',
             'email'         => 'admin@admin.com',
-            'password'      => Hash::make('Testing123'), //Testing123
+            'password'      => Hash::make('Testing123'),
             'status'        => 1,
             'id_role'       => 1,
             'password_reset'=> Hash::make('123Testing'),
