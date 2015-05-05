@@ -89,7 +89,7 @@ class SettingsTableSeeder extends DatabaseSeeder {
 
         Settings::create(array(
             'settings_name'     => 'WEBSITE_NAME',
-            'settings_value'    => 'xFinity CMS'
+            'settings_value'    => 'LaraCMS'
         ));
 
         Settings::create(array(

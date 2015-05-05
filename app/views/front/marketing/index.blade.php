@@ -1,6 +1,6 @@
 @extends('front.marketing.tpl.main')
 
-@section('meta-title') xFinite CMS - Open source cms project made in the Philippines @stop
+@section('meta-title') LaraCMS - Open source cms project made in the Philippines @stop
 
 @section('meta-description') Open source CMS project made in the Philippines @stop
 

@@ -1,10 +1,7 @@
-
 <div class="masthead">
-<h3 class="text-muted">
-	<a href="{{ URL::to('/') }}">
-		<img src="{{ asset('themes/front/marketing/img/logo.png') }}" alt="xfinity cms" width="200" height="80" class="img-responsive" />
-	</a>
-</h3>
+<h1 class="text-muted">
+	<a href="{{ URL::to('/') }}">LaraCMS</a>
+</h1>
 <ul class="nav nav-justified">
   <li class="active"><a href="{{ URL::to('/') }}">Home</a></li>
       @if(isset($pages))

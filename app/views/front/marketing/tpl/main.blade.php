@@ -11,7 +11,7 @@
     <link rel="shortcut icon" href="{{ asset('themes/front/img/favicon.ico')}}" type="image/x-icon">
     <link rel="icon" href="{{ asset('themes/front/img/favicon.ico')}}" type="image/x-icon">
 
-    <title>Xfinity CMS - Theme by Twitter Bootstrap Justified Nav</title>
+    <title>LaraCMS - Theme by Twitter Bootstrap Justified Nav</title>
 	
 	@section('header')
 		{{ HTML::style('themes/front/marketing/css/bootstrap.min.css') }}
