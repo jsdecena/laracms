@@ -18,6 +18,8 @@
 
         {{ HTML::style('themes/admin/css/style.css') }}
 
+        {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js') }}
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -49,73 +51,6 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="header">You no new messages</li>
-                                <!--
-                                <li class="header">You have 4 messages</li>
-                                <li>                                   
-                                    <ul class="menu">
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="" class="img-circle" alt="User Image"/>
-                                                </div>
-                                                <h4>
-                                                    Support Team
-                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                                </h4>
-                                                <p>Why not buy a new awesome theme?</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    AdminLTE Design Team
-                                                    <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                                                </h4>
-                                                <p>Why not buy a new awesome theme?</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Developers
-                                                    <small><i class="fa fa-clock-o"></i> Today</small>
-                                                </h4>
-                                                <p>Why not buy a new awesome theme?</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Sales Department
-                                                    <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                                                </h4>
-                                                <p>Why not buy a new awesome theme?</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Reviewers
-                                                    <small><i class="fa fa-clock-o"></i> 2 days</small>
-                                                </h4>
-                                                <p>Why not buy a new awesome theme?</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>                                
-                                -->
                                 <li class="footer"><a href="#">See All Messages</a></li>
                             </ul>
                         </li>
@@ -128,39 +63,6 @@
                             
                             <ul class="dropdown-menu">
                                 <li class="header">You no new notifications</li>
-                                <!--                                
-                                <li>
-                                    
-                                    <ul class="menu">
-                                        <li>
-                                            <a href="#">
-                                                <i class="ion ion-ios7-people info"></i> 5 new members joined today
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-warning danger"></i> Very long description here that may not fit into the page and may cause design problems
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-users warning"></i> 5 new members joined
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#">
-                                                <i class="ion ion-ios7-cart success"></i> 25 sales made
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="ion ion-ios7-person danger"></i> You changed your username
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            -->
                                 <li class="footer"><a href="#">View all</a></li>
                             </ul>                            
                         </li>
@@ -172,64 +74,6 @@
                             </a>                            
                             <ul class="dropdown-menu">
                                 <li class="header">You have no pending tasks</li>
-                                <!--
-                                <li>                                    
-                                    <ul class="menu">
-                                        <li>
-                                            <a href="#">
-                                                <h3>
-                                                    Design some buttons
-                                                    <small class="pull-right">20%</small>
-                                                </h3>
-                                                <div class="progress xs">
-                                                    <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                        <span class="sr-only">20% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <h3>
-                                                    Create a nice theme
-                                                    <small class="pull-right">40%</small>
-                                                </h3>
-                                                <div class="progress xs">
-                                                    <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                        <span class="sr-only">40% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <h3>
-                                                    Some task I need to do
-                                                    <small class="pull-right">60%</small>
-                                                </h3>
-                                                <div class="progress xs">
-                                                    <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                        <span class="sr-only">60% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <h3>
-                                                    Make beautiful transitions
-                                                    <small class="pull-right">80%</small>
-                                                </h3>
-                                                <div class="progress xs">
-                                                    <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                        <span class="sr-only">80% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                -->
                                 <li class="footer">
                                     <a href="#">View all tasks</a>
                                 </li>
@@ -308,7 +152,7 @@
                             </a>                        
                         </li>
                         @if(!$logged->can('None'))
-                        <li class="treeview @if(Request::segment(2) == "users") active @endif">
+                        <li class="treeview @if(Request::segment(1) == "users" || Request::segment(1) == "roles") active @endif">
                             <a href="{{ URL::route('users.index') }}">
                                 <i class="fa fa-user fa-fw"></i>
                                 <span>Users</span>
@@ -324,7 +168,7 @@
                                     <li><a href="{{ URL::route('users.create') }}"><i class="fa fa-angle-double-right"></i> Add user</a></li>
                                 @endif
                                 
-                                <li><a href="{{ URL::to('admin/users/roles') }}"><i class="fa fa-angle-double-right"></i>Roles</a></li>
+                                <li><a href="{{ URL::route('roles.index') }}"><i class="fa fa-angle-double-right"></i>Roles</a></li>
                             </ul>
                            
                         </li>
@@ -373,47 +217,30 @@
                                 @endif
                             </ul>
                         </li>
-                        <li class="treeview @if(Request::segment(2) == "themes") active @endif">
-                            <a href="{{ URL::to('admin/themes') }}">
-                                <i class="fa fa-picture-o fa-fw"></i>
-                                <span>Themes</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                @if($logged->can('View'))
-                                    <li><a href="{{ URL::to('admin/themes/list') }}"><i class="fa fa-angle-double-right"></i> List Themes</a></li>
-                                @endif
-                                @if($logged->can('Create'))
-                                    <li><a href="{{ URL::to('admin/themes/add') }}"><i class="fa fa-angle-double-right"></i> Add a Theme</a></li>
-                                @endif
-                              
-                            </ul>
-                        </li>
-                        <li class="treeview @if(Request::segment(3) == "carousels") active @endif">
-                            <a href="{{ URL::to('admin/modules/carousels/list') }}">
+                        <li class="treeview @if(Request::segment(1) == "carousels") active @endif">
+                            <a href="{{ URL::route('carousels.index') }}">
                                 <i class="fa fa-rocket fa-fw"></i>
                                 <span>Carousels</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 @if($logged->can('View'))
-                                    <li><a href="{{ URL::to('admin/modules/carousels/list') }}"><i class="fa fa-angle-double-right"></i> Slides </a></li>
+                                    <li><a href="{{ URL::route('carousels.index') }}"><i class="fa fa-angle-double-right"></i> Slides </a></li>
                                 @endif
                                 @if($logged->can('Create'))
-                                    <li><a href="{{ URL::to('admin/modules/carousels/add') }}"><i class="fa fa-angle-double-right"></i> Add a slide </a></li>
+                                    <li><a href="{{ URL::route('carousels.create') }}"><i class="fa fa-angle-double-right"></i> Add a slide </a></li>
                                 @endif
                             </ul>
                         </li>
-                        <li class="treeview @if(Request::segment(2) == "settings" || Request::segment(2) == "backupdb") active @endif">
-                            <a href="{{ URL::to('admin/settings') }}">
+                        <li class="treeview @if(Request::segment(1) == "settings" || Request::segment(2) == "backupdb") active @endif">
+                            <a href="{{ URL::route('settings.index') }}">
                                 <i class="fa fa-wrench fa-fw"></i>
                                 <span>Settings</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 @if($logged->can('View'))
-                                    <li><a href="{{ URL::to('admin/settings') }}"><i class="fa fa-angle-double-right"></i> Settings </a></li>
-                                    <li><a href="{{ URL::to('admin/backupdb') }}"><i class="fa fa-angle-double-right"></i> Database </a></li>
+                                    <li><a href="{{ URL::route('settings.index') }}"><i class="fa fa-angle-double-right"></i> Settings </a></li>
                                 @endif
                             </ul>
                         </li>                      
@@ -444,7 +271,7 @@
         </div><!-- ./wrapper -->        
 
         @section('footer')
-        {{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js') }}
+
         {{ HTML::script('themes/admin/js/bootstrap.min.js') }}
         {{ HTML::script('themes/admin/js/app.js') }}
         {{ HTML::script('packages/ckeditor/ckeditor.js') }}

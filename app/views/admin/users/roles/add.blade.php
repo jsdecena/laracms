@@ -22,8 +22,7 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-3 col-sm-4">
-
-                               	{{ Form::open( array('url' => $uri, 'role' => 'form') ) }}
+                               	{{ Form::open( array('url' => URL::route('roles.store'), 'role' => 'form') ) }}
                                 <div class="box-header">
                                     <i class="fa fa-users"></i>
                                     <h3 class="box-title">ROLES</h3>
@@ -67,8 +66,8 @@
                                 	</div>
                                 </div>
                                 <!-- compose message btn -->
-                                <button class="btn btn-block btn-primary {{ $logged->can('Create') ? '' : 'disabled' }}" name="add" type="submit"><i class="fa fa-plus"></i> Add Role</button>
-                                <!-- Navigation - folders-->
+                                @if($logged->can('Create'))<button class="btn btn-block btn-primary" name="add" type="submit"><i class="fa fa-plus"></i> Add Role</button>@endif
+
                        			{{ Form::close() }}
                             </div><!-- /.col (LEFT) -->
                             <div class="col-md-9 col-sm-8">
@@ -94,9 +93,7 @@
                                         		<th>ID</th>
                                         		<th>Role</th>
                                         		<th>Permissions</th>
-                                        		<th>Status</th>
                                         		<th>Action</th>
-
                                         	</tr>
 
     	                                    @foreach($roles as $role)
@@ -109,19 +106,17 @@
                                                         @endforeach
 
                                                     </td>
-    		                                        <td id="status">
-                                						@if( $role['role']->status == '1' )
-                                							<a href="/admin/users/roles/disable/{{$role['role']->id_role }}"  class='btn btn-success {{ $logged->can('Edit') ? '' : 'disabled' }}'><i class='fa fa-check'></i></a>
-                                						@else
-                                							<a href="/admin/users/roles/enable/{{$role['role']->id_role}}"class='btn btn-danger {{ $logged->can('Edit') ? '' : 'disabled' }}'><i class='fa fa-times'></i></a>
-                                						@endif
-                                					</td>
-    		                                        <td id="delete">
-
-                                						<a href="/admin/users/roles/edit/{{$role['role']->id_role}}" class='btn btn-primary {{ $logged->can('Edit') ? '' : 'disabled' }} '><i class='glyphicon glyphicon-pencil'></i></a>
-                                						@if( $role['role']->id_role != '1' )
-                                                            <a href="/admin/users/roles/delete/{{$role['role']->id_role}}" class='btn btn-danger {{ $logged->can('Delete') ? '' : 'disabled' }}'><i class="glyphicon glyphicon-trash"></i></a>
-                                					    @endif
+    		                                        <td>
+                                                        {{Form::open(array('url' => URL::route('roles.destroy', $role['role']->id_role), 'method' => 'delete'))}}
+                                                            @if($logged->can('Edit'))
+                                    						  <a href="{{URL::route('roles.edit', $role['role']->id_role)}}" class='btn btn-primary'><i class='glyphicon glyphicon-pencil'></i></a>
+                                                            @endif
+                                                            @if($logged->can('Delete'))
+                                        						@if( $role['role']->id_role != '1' )
+                                                                    <button onClick="return confirm('Are you sure you want to delete this role?')" class='btn btn-danger'><i class="glyphicon glyphicon-trash"></i></button>
+                                        					    @endif
+                                                            @endif
+                                                        {{Form::close()}}
                                                     </td>
     		                                    </tr>
     		                                @endforeach

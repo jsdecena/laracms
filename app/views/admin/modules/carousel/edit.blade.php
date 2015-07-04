@@ -1,5 +1,3 @@
-{{-- MODULES/CAROUSEL EDIT BLADE --}}
-
 @extends('admin.tpl.main')
 
 @section('body')
@@ -20,7 +18,7 @@
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form', 'files' => true)) }}
+		{{ Form::open(array('url' => URL::route('carousels.update', $slide->id_carousel), 'role' => 'form', 'files' => true, 'method' => 'put')) }}
 			<div class="form-group">
 				<label for="title">Title <sup class="text text-danger">*</sup></label>
 				<input name="title" type="text" class="form-control" id="title" value="{{{ isset($slide->title) ? $slide->title : Input::old('title') }}}">
@@ -30,11 +28,10 @@
 				<textarea name="description" id="description" class="form-control ckeditor" rows="5">{{{ isset($slide->description) ? $slide->description : Input::old('description') }}}</textarea>
 			</div>
 			<div class="form-group">
-				<label>Featured Image</label> <br />
 				@if(isset($slide->img_src) && !empty($slide->img_src))
-					<img src="{{ asset("uploads/$slide->img_src") }}" alt="" width="85" height="64" />
-				@else
-					<img src="{{ asset("uploads/no-photo.jpg") }}" alt="" width="85" height="64" />
+					<label>Featured Image</label> <br />
+					<img src="{{ asset("uploads/$slide->img_src") }}" class="img-responsive" alt="" width="85" height="64" /> <br />
+					<a onClick="return confirm('Are you sure you want to delete this slide?')" href="{{URL::route("carousel.image.delete", "action=delete_image&amp;filename=$slide->img_src&amp;id=$slide->id_carousel")}}" class="btn btn-danger">Delete</a>
 				@endif
 			</div>
 			<div class="form-group">
@@ -53,7 +50,7 @@
 				</select>
 			</div>		
 			<div class="btn-group">
-				<a href="{{ URL::to('admin/modules/carousels/list') }}" class="btn btn-default">Go Back</a>
+				<a href="{{ URL::route('carousels.index') }}" class="btn btn-default">Go Back</a>
 				<button type="submit" class="btn btn-primary" name="edit">Submit</button>
 			</div>		
 		{{ Form::close() }}

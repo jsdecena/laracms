@@ -65,30 +65,12 @@ class PostsController extends \AdminController {
 		else:
 			
 			$post 				= new Posts;
-			
-			//IF THE USER HAS UPLOADED A PROFILE IMAGE
-			if (Input::hasFile('userfile')):
-
-				$path = public_path('uploads');
-				$file = Input::file('userfile');
-
-				$newImage = value(function() use ($file){
-				    $filename = str_random(10) . '.' . $file->getClientOriginalExtension();
-				    return strtolower($filename);
-				});
-
-				$upload = $file->move($path, $newImage);
-
-				if($upload):
-					$post->img_src 		= $newImage;
-				endif;
-			endif;
-
 			$post->post_type 	= $this->post_type;
 			$post->title 		= Input::get('title');
 			$post->slug 		= Str::slug(Input::get('title'));
 			$post->content 		= Input::get('content');
 			$post->status 		= Input::get('status');
+			$post->img_src 		= $this->imageUpload('userfile');
 			$post->created_at 	= date('Y-m-d H:i:s');
 			$post->updated_at 	= date('Y-m-d H:i:s');
 			$post->save();
@@ -192,69 +174,17 @@ class PostsController extends \AdminController {
 			return Redirect::route('posts.edit', $id)->withErrors($validator)->withInput();
 		else:
 
-			$post 	= Posts::find($id);
-
-			//IF THE USER HAS UPLOADED A FEATURED IMAGE
-			if (Input::hasFile('userfile')):
-
-				$path = public_path('uploads');
-				$file = Input::file('userfile');
-
-				$newImage = value(function() use ($file){
-				    $filename = str_random(10) . '.' . $file->getClientOriginalExtension();
-				    return strtolower($filename);
-				});
-
-				$upload = $file->move($path, $newImage);
-
-				if($upload):
-					$post->img_src 		= $newImage;
-				endif;
-			endif;
-
+			$post 				= Posts::find($id);
 			$post->title 		= Input::get('title');
 			$post->slug 		= Str::slug(Input::get('title'));
 			$post->content 		= Input::get('content');
+			$post->img_src 		= $this->imageUpload('userfile');
 			$post->status 		= Input::get('status');
 			$post->updated_at 	= date('Y-m-d H:i:s');			
-			$post->save();
-
-			$posts_categories   = Posts_Categories::where('id_post', '=', $id)->delete();
-
-			//GET THE ID OF LAST INSERTED POST
-			$categories 		= Input::get('categories'); 
 			
-			if( is_array($categories) ) :
-				// LOOP FOR CATEGORIES 
-			 	for ( $i = 0;  $i < count($categories); $i++ ) :
-			 		
-			 		$data 		= array(
-			 			
-			 			'id_post' 		=> $id,
-			 			'id_category'	=> $categories[$i],
-			 			'created_at'    => date('Y-m-d H:i:s'),
-			 			'updated_at'    => date('Y-m-d H:i:s')
-			 		
-			 		);
-
-			 		$posts_categories = Posts_Categories::create($data);
-
-			 	endfor;
-			 
-			else :
-			 	
-			 	$data           = array(
-
-			 			'id_post'       => $id,
-			 			'id_category'   => 1,
-			 			'created_at'    => date('Y-m-d H:i:s'),
-			 			'updated_at'    => date('Y-m-d H:i:s')
-			 		);
-
-			 	$posts_categories = Posts_Categories::create($data);
-
-			endif; 
-  
+			//SAVE ALSO THE CATEGORY IDS IN THE PIVOT TABLE
+			if($post->save())
+				$post->categories()->sync(Input::get('categories'));
 
 			return Redirect::route('posts.index')->with('success', 'You have successfully edited a post.');
 		endif;

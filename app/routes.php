@@ -44,20 +44,25 @@ Route::group(array('before' => 'auth'), function()
 	Route::get('posts/featured/image/delete', array('as' => 'posts.featured.image.delete', 'uses' => 'PostsController@delete_image'));
 	Route::resource('posts', 'PostsController');
 
+	Route::get('category/enable', array('as' => 'category.enable', 'uses' => 'CategoriesController@enable'));
+	Route::get('category/disable', array('as' => 'category.disable', 'uses' => 'CategoriesController@disable'));
 	Route::resource('categories', 'CategoriesController');
 
+	Route::get('carousels/image/delete', array('as' => 'carousel.image.delete', 'uses' => 'CarouselsController@deleteImage'));
+	Route::get('carousels/enable', array('as' => 'carousels.enable', 'uses' => 'CarouselsController@enable'));
+	Route::get('carousels/disable', array('as' => 'carousels.disable', 'uses' => 'CarouselsController@disable'));	
+	Route::resource('carousels', 'CarouselsController');
 
-	Route::post('admin/settings', 'SettingsController@postSettings');
-	Route::controller('admin/users/roles', 'RolesController');
-	Route::controller('admin/settings', 'SettingsController');
-	Route::controller('admin/themes', 'ThemesController');
-	Route::controller('admin/modules/carousels', 'CarouselsController');
+	Route::resource('roles', 'RolesController');
+	Route::resource('settings', 'SettingsController');
+	
 	Route::controller('admin', 'AdminController');
 });
 
-/*PUBLIC FACING ROUTES*/
 Route::get('{slug}', 'FrontController@viewSlug');
 Route::get('/', 'IndexController@home');
+
+/*PUBLIC FACING ROUTES*/
 Route::get('contact', 'ContactController@index');
 Route::post('contact', 'ContactController@submit');
 

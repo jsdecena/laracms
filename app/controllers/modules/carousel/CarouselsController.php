@@ -1,33 +1,38 @@
 <?php
 
-class CarouselsController extends AdminController {
+class CarouselsController extends \AdminController {
 
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
-	public function getIndex()
-	{
-		$this->getList();
-		
-	}
-
-	public function getList()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
 	{
 		$data['carousels'] 		= Carousels::orderBy('created_at', 'DESC')->paginate(10);
 		
 		/*CAROUSEL SETTINGS*/
 		$this->layout->content 	= View::make('admin.modules.carousel.list', $data);
-	}	
+	}
 
-	public function getAdd()
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
 	{
-		/*CAROUSEL SETTINGS*/
 		$this->layout->content 	= View::make('admin.modules.carousel.add');
 	}
 
-	public function postAdd()
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
@@ -35,54 +40,59 @@ class CarouselsController extends AdminController {
 		);
 
 		$validator 				= Validator::make(Input::all(), $rules);
-		$data['uri'] 			= Request::path();
 
 		if ($validator->fails()) :
-
-			return Redirect::to(Request::path())->withErrors($validator);
+			return Redirect::route('carousels.create')->withErrors($validator);
 		else:
 			
 			$carousel 				= new Carousels;
-			
-			//IF THE USER HAS UPLOADED A PROFILE IMAGE
-			if (Input::hasFile('userfile')):
-
-				$path = public_path('uploads');
-				$file = Input::file('userfile');
-
-				$newImage = value(function() use ($file){
-				    $filename = str_random(10) . '.' . $file->getClientOriginalExtension();
-				    return strtolower($filename);
-				});
-
-				$upload = $file->move($path, $newImage);
-
-				if($upload):
-					$carousel->img_src 		= $newImage;
-				endif;
-			endif;
-
 			$carousel->title 		= Input::get('title');
 			$carousel->description 	= Input::get('description');
 			$carousel->link 		= Input::get('link');
 			$carousel->status 		= Input::get('status');
+			$carousel->img_src 		= $this->imageUpload('userfile');
 			$carousel->created_at 	= date('Y-m-d H:i:s');
 			$carousel->updated_at 	= date('Y-m-d H:i:s');
 			$carousel->save();
 
-			return Redirect::to('admin/modules/carousels/list')->with('success', 'You have successfully added a slide.');
+			return Redirect::route('carousels.index')->with('success', 'You have successfully added a slide.');
 		endif;
 	}
 
-	public function getEdit()
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
 	{
-		$data['slide'] 			= Carousels::find(Request::segment(5));
+		//
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		$data['slide'] 			= Carousels::find($id);
 		$this->layout->content 	= View::make('admin.modules.carousel.edit', $data);
 	}
 
-	public function postEdit()
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
 	{
-	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
 			'title'			=> 'required'
 		);
@@ -90,66 +100,67 @@ class CarouselsController extends AdminController {
 		$validator 				= Validator::make(Input::all(), $rules);
 
 		if ($validator->fails()) :
-			return Redirect::to(Request::path())->withErrors($validator)->withInput(Input::except('password'));
+			return Redirect::route('carousels.edit', $id)->withErrors($validator)->withInput(Input::except('password'));
 		else:
 			
-			$slide 				= Carousels::find(Request::segment(5));
-			
-			//IF THE USER HAS UPLOADED A PROFILE IMAGE
-			if (Input::hasFile('userfile')):
-
-				$path = public_path('uploads');
-				$file = Input::file('userfile');
-
-				$newImage = value(function() use ($file){
-				    $filename = str_random(10) . '.' . $file->getClientOriginalExtension();
-				    return strtolower($filename);
-				});
-
-				$upload = $file->move($path, $newImage);
-
-				if($upload):
-					$slide->img_src 		= $newImage;
-				endif;
-			endif;
-
+			$slide 				= Carousels::find($id);
 			$slide->title 		= Input::get('title');
 			$slide->description = Input::get('description');
 			$slide->link 		= Input::get('link');
+			$slide->img_src 	= $this->imageUpload('userfile');
 			$slide->status 		= Input::get('status');
 			$slide->created_at 	= date('Y-m-d H:i:s');
 			$slide->updated_at 	= date('Y-m-d H:i:s');
 			$slide->save();
 
-			return Redirect::to('admin/modules/carousels/list')->with('success', 'You have successfully edited a page.');
-		endif;		
+			return Redirect::route('carousels.index')->with('success', 'You have successfully edited a page.');
+		endif;	
 	}
 
-	public function getDelete()
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
 	{
-		$slide = Carousels::find(Request::segment(5));
+		$slide = Carousels::find($id);
 		$slide->delete();
 
-		return Redirect::to('admin/modules/carousels/list')->with('success', 'You have successfully deleted a slide.');
+		return Redirect::route('carousels.index')->with('success', 'You have successfully deleted a slide.');
 	}
 
-	public function getEnable()
+	public function deleteImage()
+	{
+		if (Input::get('action') == "delete_image") {
+			
+			DB::table('carousels')
+			            ->where('img_src', Input::get('filename'))
+			            ->update(array('img_src' => null));
+
+			return Redirect::route("carousels.edit", Input::get('id'))->with('success', 'You have deleted the image.');
+		}
+	}
+
+	public function enable()
 	{
 		//QUICK ENABLE PAGE
-		$slide 				= Carousels::find(Request::segment(5));
-		$slide->status 		= 1;
-		$slide->save();
+		$carousel 				= Carousels::find(Input::get('id'));
+		$carousel->status 		= 1;
+		$carousel->save();
 
-		return Redirect::to('admin/modules/carousels/list')->with('success', 'You have enabled the slide.');
+		return Redirect::route('carousels.index')->with('success', 'You have enabled the slide.');
 	}
 
-	public function getDisable()
+	public function disable()
 	{
 		//QUICK DISABLE PAGE
-		$slide 				= Carousels::find(Request::segment(5));
-		$slide->status 		= 0;
-		$slide->save();
+		$carousel 				= Carousels::find(Input::get('id'));
+		$carousel->status 		= 0;
+		$carousel->save();
 
-		return Redirect::to('admin/modules/carousels/list')->with('error', 'You have disabled the slide.');
+		return Redirect::route('carousels.index')->with('error', 'You have disabled the slide.');
 	}	
 }

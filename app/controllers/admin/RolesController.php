@@ -1,29 +1,26 @@
 <?php
 
-class RolesController extends AdminController {
+class RolesController extends \AdminController {
 
-	public function __construct()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
 	{
-		parent::__construct();
-		$this->beforeFilter('role');
-		$this->beforeFilter('permission');
+		$this->create();
 	}
 
-	public function getIndex()
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
 	{
-		return $this->getList();
-		
-	}
-
-	public function getList()
-	{
-
-		//CURRENT LOGGED USERS
-		$data['logged']             = User::find( Auth::id() );
-		//QUERY ALL ROLES
-
 		$roles                      = Roles::orderBy($this->settingsValue('ORDER_BY'), $this->settingsValue('ARRANGE_BY'))->paginate((int)$this->settingsValue('POSTS_PER_PAGE'));
-		
 
 		//CREATE AN ARRAY OF ROLES WITH THEIR PERMISSIONS
 		$roles_permissions_arr 		= array();
@@ -35,14 +32,18 @@ class RolesController extends AdminController {
 
 		$data['roles']     			= $roles_permissions_arr;
 
-
 		//QUERY ALL PERMISSIONS
 		$data['permissions']    	= Permissions::exceptNone()->get();
-		$data['uri'] 				= Request::path()."/add";
 		$this->layout->content 		= View::make('admin.users.roles.add', $data);
 	}
 
-	public function postAdd()
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
 	{
 		$rules = array(
 			'role' 		=> 'required',
@@ -52,7 +53,7 @@ class RolesController extends AdminController {
 
 		if ($validator->fails()) :
 
-			return Redirect::to('/admin/users/roles')->withErrors($validator)->withInput();
+			return Redirect::route('roles.create')->withErrors($validator)->withInput();
 		
 		else:
 
@@ -97,22 +98,38 @@ class RolesController extends AdminController {
 
 			endif;
 
-			return Redirect::to('admin/users/roles')->with('success', 'You have successfully added a role.');
+			return Redirect::route('roles.create')->with('success', 'You have successfully added a role.');
 
 		endif;
-
-
 	}
-	public function getEdit()
+
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
 	{
-		$data['role']     			= Roles::find(Request::segment(5));
-		$data['uri'] 				= Request::path();
-		$roles_permissions          = Roles::find(Request::segment(5))->permissions;
+		//
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		$data['role']     			= Roles::find($id);
+		$roles_permissions          = Roles::find($id)->permissions;
 
 		$roles_permissions_arr      = array();
 
 		foreach ($roles_permissions as $permission) :
-
 			array_push($roles_permissions_arr, $permission->id_permission);
 		endforeach;
 
@@ -123,41 +140,42 @@ class RolesController extends AdminController {
 		$this->layout->content 	= View::make('admin.users.roles.edit', $data);
 	}
 
-	public function postEdit()
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
 	{
-
-
 		$rules = array(
 			'role'			=> 'required'
 		);
 
 		$validator                  = Validator::make(Input::all(), $rules);
 
-		if( $validator->fails() ) :
-
-			return  Redirect::to(Request::path())->withErrors($validator)->withInput();
+		if($validator->fails()) :
+			return  Redirect::route('roles.edit', $id)->withErrors($validator)->withInput();
 		else:
 
-			$role 					= Roles::find(Request::segment(5));
-
-
+			$role 					= Roles::find($id);
 			$role->role             = Input::get('role');
 			$role->description      = Input::get('description');
 			$role->status           = Input::get('status');
 			$role->updated_at 		= date('Y-m-d H:i:s');	
 			$role->save();
 
-			$roles_permissions      = Roles_Permissions::where('id_role', '=', Request::segment(5))->delete();
-
+			$roles_permissions      = Roles_Permissions::where('id_role', $id)->delete();
 			$permissions            = Input::get('permissions');
 
 			//GET THE USERS WITH THIS ROLE
-			$users_with_role        = array_fetch(User::where('id_role', '=', Request::segment(5))->get()->toArray(), 'id_user');
+			$users_with_role        = array_fetch(User::where('id_role', $id)->get()->toArray(), 'id_user');
 
 			//UPDATE PERMISSIONS ON USERS_PERMISSIONS
 			for ($i=0; $i < count($users_with_role); $i++ ) :
 
-				$users_permissions = Users_Permissions::where('id_user','=', $users_with_role[$i])->delete();
+				$users_permissions = Users_Permissions::where('id_user', $users_with_role[$i])->delete();
 				if ( is_array($permissions) ) :
 
 					for ($x=0; $x < count($permissions); $x++) :
@@ -170,9 +188,7 @@ class RolesController extends AdminController {
 						$users_permissions  = Users_Permissions::create($data); 
 						
 					endfor;
-
 				else:
-
 
 					$data = array(
 						'id_user' 		=> $users_with_role[$i],
@@ -191,7 +207,7 @@ class RolesController extends AdminController {
 					
 					$data = array(
 
-						'id_role'    		=> Request::segment(5),
+						'id_role'    		=> $id,
 						'id_permission'		=> $permissions[$i],
 						'created_at'   		=> date('Y-m-d H:i:s'),
 						'updated_at'    	=> date('Y-m-d H:i:s')
@@ -204,7 +220,7 @@ class RolesController extends AdminController {
 
 					$data = array(
 
-						'id_role'			=> Request::segment(5),
+						'id_role'			=> $id,
 						'id_permission' 	=> 5,
 						'created_at'    	=> date('Y-m-d H:i:s'),
 						'updated_at'   	 	=> date('Y-m-d H:i:s')
@@ -213,52 +229,27 @@ class RolesController extends AdminController {
 					$roles_permissions = Roles_Permissions::create($data);   
 			endif;
 
-
-
-
-			return Redirect::to('admin/users/roles')->with('success', 'You have successfully edited a role.');
+			return Redirect::route('roles.create')->with('success', 'You have successfully edited a role.');
 		endif;
 	}
 
-	public function getDelete()
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
 	{
+		$role = Roles::find($id);
 
-		
-		$role = Roles::find(Request::segment(5));
-
-		//GET THE USERS WITH THIS ROLE
-		$users_with_role        = array_fetch(User::where('id_role', '=', Request::segment(5))->get()->toArray(), 'id_user');
-
-		for($i = 0; $i < count($users_with_role); $i++ ) :
-
-			$users_permissions = Users_Permissions::find($users_with_role[$i])->delete();
-		endfor; 
-
-		$role->delete();
-
-		$users = User::where('role', '=' , Request::segment(5))->update(array('role' => ''));
-
-		return Redirect::to('admin/users/roles')->with('success', 'You have successfully deleted a role.');
+		if($role->users()->count())
+			return Redirect::route('roles.create')->with('error', 'Ooops, this role is being used. You cannot delete.');
+		else
+			$role->delete();
+			return Redirect::route('roles.create')->with('success', 'You have successfully deleted a role.');
 	}
 
-	public function getEnable()
-	{
-		//QUICK ENABLE ROLE
-		$role 				= Roles::find(Request::segment(5));
-		$role->status 		= 1;
-		$role->save();
-
-		return Redirect::to('admin/users/roles')->with('success', 'You have enabled the role.');
-	}
-
-	public function getDisable()
-	{
-		//QUICK DISABLE ROLE
-		$role 				= Roles::find(Request::segment(5));
-		$role->status 		= 0;
-		$role->save();
-
-		return Redirect::to('admin/users/roles')->with('error', 'You have disabled the role.');
-	}
 
 }

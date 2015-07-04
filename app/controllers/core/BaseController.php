@@ -19,4 +19,21 @@ class BaseController extends Controller {
 		}
 	}
 
+	public function imageUpload($filename)
+	{
+		if (Input::hasFile($filename)):
+
+			$path = public_path('uploads');
+			$file = Input::file($filename);
+
+			$newImage = value(function() use ($file){
+			    $filename = str_random(10) . '.' . $file->getClientOriginalExtension();
+			    return strtolower($filename);
+			});
+
+			if($upload = $file->move($path, $newImage))
+				return $newImage;
+		endif;		
+	}	
+
 }
