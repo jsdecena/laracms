@@ -1,21 +1,9 @@
-
-{{-- POST LIST BLADE --}}
-
 @extends('admin.tpl.main')
 
 @section('body')
 	<div id="content-body">
-	    @if(Session::get('success'))
-	        <p class="alert alert-success">
-	            <button type="button" class="close" data-dismiss="alert">&times;</button>
-	            {{ Session::get('success') }}
-	        </p>
-	    @elseif(Session::get('error'))
-	        <p class="alert alert-danger">
-	            <button type="button" class="close" data-dismiss="alert">&times;</button>
-	            {{ Session::get('error') }}
-	        </p>
-	    @endif
+		
+		@include('messages')
 	    
 	    @if( isset($posts) && !empty($posts) )
 			<table class="table table-striped">
@@ -39,17 +27,22 @@
 								<span class="label label-default">{{$category->category}}</span>&nbsp;
 							@endforeach
 						</td>
-
+						@if($logged->can('Edit'))
 						<td id="status">
 							@if( $post['post']->status == '1' )
-								<a href="/admin/posts/disable/{{$post['post']->id_post}}"  class='btn btn-success {{ $logged->can('Edit') ? '' : 'disabled' }}'><i class='fa fa-check'></i></a>
+								<a onClick="return confirm('Are you sure you want to disable?')" href="{{ URL::route("posts.disable", "id=" . $post['post']->id_post) }}" class="btn btn-success"><i class="fa fa-check"></i></a>
 							@else
-								<a href="/admin/posts/enable/{{$post['post']->id_post}}"class='btn btn-danger {{ $logged->can('Edit') ? '' : 'disabled' }} '><i class='fa fa-times'></i></a>
+								<a onClick="return confirm('Are you sure you want to enable?')" href="{{ URL::route("posts.enable", "id=" . $post['post']->id_post) }}" class="btn btn-danger"><i class="fa fa-times"></i></a>
 							@endif
 						</td>
-						<td id="delete">
-							<a href="/admin/posts/edit/{{$post['post']->id_post}}" class='btn btn-primary {{ $logged->can('Edit') ? '' : 'disabled' }}'><i class='glyphicon glyphicon-pencil'></i></a>
-							<a href="/admin/posts/delete/{{$post['post']->id_post}}" class='btn btn-danger {{ $logged->can('Delete') ? '' : 'disabled' }}'><i class="glyphicon glyphicon-trash"></i></a>
+						@endif
+						<td>
+							{{Form::open(array('url' => URL::route('posts.destroy', $post['post']->id_post), 'method' => 'delete'))}}
+								@if($logged->can('Edit'))<a href="{{URL::route('posts.edit', $post['post']->id_post)}}" class="btn btn-primary"><i class='glyphicon glyphicon-pencil'></i></a>@endif
+								@if($logged->can('Delete'))
+									<button onClick="return confirm('Are you sure you want to delete?')" class="btn btn-danger"><i class='glyphicon glyphicon-trash'></i></button>
+								@endif
+							{{Form::close()}}
 						</td>
 					</tr>
 					@endforeach

@@ -17,7 +17,7 @@
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form', 'files' => true)) }}
+		{{ Form::open(array('url' => URL::route("pages.update", $page->id_post), 'role' => 'form', 'files' => true, 'method' => 'put')) }}
 			
 			<div class="form-group">
 				<label for="title">Title</label>
@@ -35,7 +35,7 @@
 				</select>
 			</div>
 			<div class="btn-group">
-				<a href="{{ URL::to('admin/pages/list') }}" class="btn btn-default">Go back</a>
+				<a href="{{ URL::route('pages.index') }}" class="btn btn-default">Go back</a>
 				<button class="btn btn-primary" name="edit" type="submit">Update Page</button>
 			</div>
 			

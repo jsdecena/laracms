@@ -1,33 +1,36 @@
 <?php
 
-class CategoriesController extends AdminController {
+class CategoriesController extends \AdminController {
 
-	public function __construct()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
 	{
-		parent::__construct();
-		$this->beforeFilter('permission');
-	}
-
-	public function getIndex()
-	{
-		$this->getList();
-	}
-
-	public function getList()
-	{
-		//CURRENT LOGGED USER
-		$data['logged']					=  User::find( Auth::id() );
-
 		$data['categories'] 			= Categories::orderBy($this->settingsValue('ORDER_BY'), $this->settingsValue('ARRANGE_BY'))->paginate((int)$this->settingsValue('POSTS_PER_PAGE'));
 		$this->layout->content 			= View::make('admin.categories.list', $data);
 	}
 
-	public function getAdd()
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
 	{
-		$this->layout->content 	= View::make('admin.categories.add');	
+		$this->layout->content 	= View::make('admin.categories.add');
 	}
 
-	public function postAdd()
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
@@ -48,17 +51,43 @@ class CategoriesController extends AdminController {
 			$categories->updated_at 	= date('Y-m-d H:i:s');
 			$categories->save();
 
-			return Redirect::to('admin/categories')->with('success', 'You have successfully added a category.');
+			return Redirect::route('categories.index')->with('success', 'You have successfully added a category.');
 		endif;
 	}
 
-	public function getEdit()
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
 	{
-		$data['category'] 			= Categories::find(Request::segment(4));
+		//
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		$data['category'] 			= Categories::find($id);
 		$this->layout->content 		= View::make('admin.categories.edit', $data);
 	}
 
-	public function postEdit()
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
@@ -73,51 +102,41 @@ class CategoriesController extends AdminController {
 			return Redirect::to(Request::path())->withErrors($validator)->withInput(Input::except('password'));
 		else:
 			
-			$category 				= Categories::find(Request::segment(4));
+			$category 				= Categories::find($id);
 			$category->category 	= Input::get('category');
 			$category->description 	= Input::get('description');
 			$category->status 		= Input::get('status');
 			$category->updated_at 	= date('Y-m-d H:i:s');			
 			$category->save();
 
-			return Redirect::to('admin/categories/list')->with('success', 'You have successfully edited a page.');
-		endif;		
+			return Redirect::route('categories.index')->with('success', 'You have successfully edited a category.');
+		endif;	
 	}
 
-	public function getDelete()
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
 	{
 		/*CHECK IF THERE IS A POST ATTACHED TO THIS CATEGORY*/
-		$count 					= Posts::where('post_cat', '=', Request::segment(4))->count();
+		$count 					= Posts::where('id_post', $id)->categories->get();
+
+		var_dump($count); die();
 		
 		if( $count > 0 ) :
-			return Redirect::to('admin/categories/list')->with('error', 'Sorry, there is a post tagged in this category. Delete the post before you can delete the category.');
+			return Redirect::route('categories.index')->with('error', 'Sorry, there is a post tagged in this category. Delete the post before you can delete the category.');
 		else:
 			
-			$category 				= Categories::find(Request::segment(4));
+			$category 				= Categories::find($id);
 			$category->delete();
 
-			return Redirect::to('admin/categories/list')->with('success', 'You have successfully deleted a category.');
+			return Redirect::route('categories.index')->with('success', 'You have successfully deleted a category.');
 		endif;
-
-	}	
-
-	public function getEnable()
-	{
-		//QUICK ENABLE PAGE
-		$category 				= Categories::find(Request::segment(4));
-		$category->status 		= 1;
-		$category->save();
-
-		return Redirect::to('admin/categories/list')->with('success', 'You have enabled the category.');
 	}
 
-	public function getDisable()
-	{
-		//QUICK DISABLE PAGE
-		$category 				= Categories::find(Request::segment(4));
-		$category->status 		= 0;
-		$category->save();
 
-		return Redirect::to('admin/categories/list')->with('error', 'You have disabled the category.');
-	}	
 }

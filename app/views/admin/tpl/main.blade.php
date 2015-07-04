@@ -266,7 +266,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="{{ URL::to("admin/users/myaccount") }}" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="{{ URL::route("users.account", "id=" . Auth::id()) }}" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="{{ URL::to('logout') }}" class="btn btn-default btn-flat">Sign out</a>
@@ -296,7 +296,7 @@
                         <div class="pull-left info">
                             <p>Hello, {{{ isset($name) ? $name : null }}}</p>
                             <a class="btn btn-primary" href="{{ URL::to('logout') }}">Logout</a>
-                            <a href="{{ URL::to("admin/users/myaccount") }}" class="btn btn-primary">Profile</a>
+                            <a href="{{ URL::route("users.account", "id=" . Auth::id()) }}" class="btn btn-primary">Profile</a>
                         </div>
                     </div>
                     <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -309,7 +309,7 @@
                         </li>
                         @if(!$logged->can('None'))
                         <li class="treeview @if(Request::segment(2) == "users") active @endif">
-                            <a href="{{ URL::to('admin/users/list') }}">
+                            <a href="{{ URL::route('users.index') }}">
                                 <i class="fa fa-user fa-fw"></i>
                                 <span>Users</span>
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -317,59 +317,59 @@
                             
                             <ul class="treeview-menu">
                                 @if($logged->can('View'))
-                                    <li><a rel="tab" href="{{ URL::to('admin/users/list') }}"><i class="fa fa-angle-double-right"></i> List</a></li>
+                                    <li><a rel="tab" href="{{ URL::route('users.index') }}"><i class="fa fa-angle-double-right"></i> List</a></li>
                                 @endif
                                
                                 @if($logged->can('Create'))
-                                    <li><a href="{{ URL::to('admin/users/add') }}"><i class="fa fa-angle-double-right"></i> Add user</a></li>
+                                    <li><a href="{{ URL::route('users.create') }}"><i class="fa fa-angle-double-right"></i> Add user</a></li>
                                 @endif
                                 
                                 <li><a href="{{ URL::to('admin/users/roles') }}"><i class="fa fa-angle-double-right"></i>Roles</a></li>
                             </ul>
                            
                         </li>
-                        <li class="treeview @if(Request::segment(2) == "pages") active @endif">
-                            <a href="{{ URL::to('admin/users/list') }}">
+                        <li class="treeview @if(Request::segment(1) == "pages") active @endif">
+                            <a href="{{ URL::route('pages.index') }}">
                                 <i class="fa fa-file fa-fw"></i>
                                 <span>Pages</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 @if($logged->can('View'))
-                                    <li><a href="{{ URL::to('admin/pages/list') }}"><i class="fa fa-angle-double-right"></i> List pages</a></li>
+                                    <li><a href="{{ URL::route('pages.index') }}"><i class="fa fa-angle-double-right"></i> List pages</a></li>
                                 @endif
                                 @if($logged->can('Create'))
-                                    <li><a href="{{ URL::to('admin/pages/add') }}"><i class="fa fa-angle-double-right"></i> Add a page</a></li>
+                                    <li><a href="{{ URL::route('pages.create') }}"><i class="fa fa-angle-double-right"></i> Add a page</a></li>
                                 @endif
                             </ul>
                         </li>
-                        <li class="treeview @if(Request::segment(2) == "posts") active @endif">
-                            <a href="{{ URL::to('admin/posts/list') }}">
+                        <li class="treeview @if(Request::segment(1) == "posts") active @endif">
+                            <a href="{{ URL::route('posts.index') }}">
                                 <i class="fa fa-file-o fa-fw"></i>
                                 <span>Posts</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 @if($logged->can('View'))
-                                    <li><a href="{{ URL::to('admin/posts/list') }}"><i class="fa fa-angle-double-right"></i> List posts</a></li>
+                                    <li><a href="{{ URL::route('posts.index') }}"><i class="fa fa-angle-double-right"></i> List posts</a></li>
                                 @endif
                                 @if($logged->can('Create'))
-                                    <li><a href="{{ URL::to('admin/posts/add') }}"><i class="fa fa-angle-double-right"></i> Add a post</a></li>
+                                    <li><a href="{{ URL::route('posts.create') }}"><i class="fa fa-angle-double-right"></i> Add a post</a></li>
                                 @endif
                             </ul>
                         </li>
-                        <li class="treeview @if(Request::segment(2) == "categories") active @endif">
-                            <a href="{{ URL::to('admin/categories') }}">
+                        <li class="treeview @if(Request::segment(1) == "categories") active @endif">
+                            <a href="{{ URL::route('categories.index') }}">
                                 <i class="fa fa-bookmark fa-fw"></i>
                                 <span>Categories</span>
                                 <i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="treeview-menu">
                                 @if($logged->can('View'))
-                                    <li><a href="{{ URL::to('admin/categories/list') }}"><i class="fa fa-angle-double-right"></i> List Categories</a></li>
+                                    <li><a href="{{ URL::route('categories.index') }}"><i class="fa fa-angle-double-right"></i> List Categories</a></li>
                                 @endif
                                 @if($logged->can('Create'))
-                                    <li><a href="{{ URL::to('admin/categories/add') }}"><i class="fa fa-angle-double-right"></i> Add a Category</a></li>
+                                    <li><a href="{{ URL::route('categories.create') }}"><i class="fa fa-angle-double-right"></i> Add a Category</a></li>
                                 @endif
                             </ul>
                         </li>

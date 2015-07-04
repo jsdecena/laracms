@@ -1,23 +1,11 @@
-{{-- PAGES EDIT BLADE --}}
-
 @extends('admin.tpl.main')
 
 @section('body')
     
     <div id="content-body">
-	    {{-- CHECK IF THERE IS A SESSION MESSAGE FOR FAILED ATTEMPT --}}
-	    @if($errors->all())
-	        <ul class="list-unstyled">
-	            @foreach($errors->all() as $error)
-	                <li class="alert alert-danger">
-	                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-	                    {{ $error }}
-	                </li>
-	            @endforeach
-	        </ul>
-	    @endif
+    	@include('messages')
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form')) }}
+		{{ Form::open(array('url' => URL::route('categories.update', $category->id_category), 'role' => 'form', 'method' => 'put')) }}
 			
 			<div class="form-group">
 				<label for="category">Title <sup class="text text-danger">*</sup></label>
@@ -35,8 +23,8 @@
 				</select>
 			</div>
 			<div class="btn-group">
-				<a href="{{ URL::to('admin/categories/list') }}" class="btn btn-default">Go back</a>
-				<button class="btn btn-primary" name="add" type="submit">Add Page</button>
+				<a href="{{ URL::route('categories.index') }}" class="btn btn-default">Go back</a>
+				<button class="btn btn-primary" name="add" type="submit">Update Category</button>
 			</div>
 		{{ Form::close() }}
 	</div>

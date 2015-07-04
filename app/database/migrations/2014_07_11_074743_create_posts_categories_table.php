@@ -14,8 +14,10 @@ class CreatePostsCategoriesTable extends Migration {
 	{
 		Schema::create('posts_categories', function($table){
 			$table->increments('id_post_category');
-			$table->integer('id_post');
-			$table->integer('id_category');
+			$table->integer('id_post')->unsigned();
+			$table->foreign('id_post')->references('id_post')->on('posts');
+			$table->integer('id_category')->unsigned();
+			$table->foreign('id_category')->references('id_category')->on('categories');
 			$table->timestamps();
 		});
 	}

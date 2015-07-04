@@ -5,17 +5,8 @@
 @section('body')
 	
 	<div id="content-body">
-	    @if(Session::get('success'))
-	        <p class="alert alert-success">
-	            <button type="button" class="close" data-dismiss="alert">&times;</button>
-	            {{ Session::get('success') }}
-	        </p>
-	    @elseif(Session::get('error'))
-	        <p class="alert alert-danger">
-	            <button type="button" class="close" data-dismiss="alert">&times;</button>
-	            {{ Session::get('error') }}
-	        </p>
-	    @endif
+		
+		@include('messages')
 	    
 	    @if( isset($categories) && !$categories->isEmpty() )
 			<table class="table table-striped">
@@ -46,9 +37,12 @@
 						</td>
 						<td id="delete">
 							@if($category->id_category != 1)
-								<a target="_blank" href="{{ URL::to("categories/$category->id_category") }}" class="btn btn-default"><i class="fa fa-eye"></i> View</a>
-								<a href="{{ URL::to("admin/categories/edit/$category->id_category") }}" class="btn btn-primary {{ $logged->can('Edit') ? '' : 'disabled' }}"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
-								<a href="{{ URL::to("admin/categories/delete/$category->id_category") }}" class="btn btn-danger {{ $logged->can('Delete') ? '' : 'disabled' }}"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+								{{Form::open(array('url' => URL::route('categories.destroy', $category->id_category), 'method' => 'delete'))}}
+									@if($logged->can('Edit'))<a href="{{ URL::route("categories.edit", $category->id_category) }}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Edit</a>@endif
+									@if($logged->can('Delete'))
+										<button onClick="return confirm('Are you sure you want to delete the category?')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button>
+									@endif
+								{{Form::close()}}
 							@endif
 						</td>
 					</tr>

@@ -5,20 +5,15 @@
 @section('body')
     
     <div id="content-body">
-	
-	    {{-- CHECK IF THERE IS A SESSION MESSAGE FOR FAILED ATTEMPT --}}
 	    @if($errors->all())
-	        <ul class="list-unstyled">
+	        <ul class="list-unstyled alert alert-danger">
 	            @foreach($errors->all() as $error)
-	                <li class="alert alert-danger">
-	                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-	                    {{ $error }}
-	                </li>
+	                <li>{{ $error }}</li>
 	            @endforeach
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form')) }}
+		{{ Form::open(array('url' => URL::route('users.store'), 'role' => 'form')) }}
 			<div class="form-group">
 				<label for="firstname">First Name</label>
 				<input name="firstname" type="text" class="form-control" id="firstname" value="{{Input::old('firstname')}}">
@@ -38,15 +33,21 @@
 			<div class="form-group">
 				<label for="role">Role</label>
 				<select class="form-control" name="role" id="role">
-					<option value=""></option>
 					@foreach($roles as $role)
 					<option @if( Input::old('role') == $role->id_role ) selected @endif value="{{$role->id_role}}">{{$role->role}}</option>
 					@endforeach
 				</select>
 			</div>
+			<div class="form-group">
+				<label for="status">Status</label>
+				<select class="form-control" name="status" id="status">
+					<option value="0" selected="selected">Disable</option>
+					<option value="1">Enable</option>
+				</select>
+			</div>			
 			<div class="btn-group">
-				<a href="{{ URL::to('users') }}" class="btn btn-default">Go Back</a>
-				<button type="submit" class="btn btn-primary" name="add">Submit</button>
+				<a href="{{ URL::route('users.index') }}" class="btn btn-default">Go Back</a>
+				<button type="submit" class="btn btn-primary" name="submit">Submit</button>
 			</div>		
 		{{ Form::close() }}
 	</div>	

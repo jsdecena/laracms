@@ -4,6 +4,7 @@ class Posts extends Eloquent {
 
     protected $primaryKey   = 'id_post';
     protected $table = 'posts';
+    
     /* === QUERY SCOPES ===*/
     public function scopePages($query)
     {

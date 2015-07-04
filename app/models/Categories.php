@@ -11,5 +11,9 @@ class Categories extends Eloquent {
 		return $query->where('status', '=', '1');
 	}
 
+    public function posts()
+    {
+        return $this->belongsToMany('Posts', 'posts_categories', 'id_category', 'id_post');
+    }
 	
 }

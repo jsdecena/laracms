@@ -1,8 +1,6 @@
 <?php
 
-class PagesController extends AdminController {
-
-	public $post_type;
+class PagesController extends \AdminController {
 
 	public function __construct()
 	{
@@ -10,30 +8,39 @@ class PagesController extends AdminController {
 
 		$this->post_type = "page";
 		$this->beforeFilter('permission');
-	}
+	}	
 
-	public function getIndex()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
 	{
-		return $this->getList();
-	}
-
-	public function getList()
-	{
-		//CURRENT LOGGED USER
-		$data['logged']			= User::find( Auth::id() );
 		//QUERY ALL THE PAGES
 		$data['pages'] 			= Posts::pages()->orderBy($this->settingsValue('ORDER_BY'), $this->settingsValue('ARRANGE_BY'))->paginate((int)$this->settingsValue('POSTS_PER_PAGE'));
 
 		$this->layout->content 	= View::make('admin.pages.list', $data);
 	}
 
-	public function getAdd()
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
 	{
-		$data['uri'] 			= Request::path();
-		$this->layout->content 	= View::make('admin.pages.add', $data);	
+		$this->layout->content 	= View::make('admin.pages.add');
 	}
 
-	public function postAdd()
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
@@ -41,11 +48,9 @@ class PagesController extends AdminController {
 		);
 
 		$validator 				= Validator::make(Input::all(), $rules);
-		$data['uri'] 			= Request::path();
 
 		if ($validator->fails()) :
-
-			return Redirect::to(Request::path())->withErrors($validator);
+			return Redirect::route('pages.create')->withErrors($validator);
 		else:
 			
 			$page 				= new Posts;
@@ -77,18 +82,43 @@ class PagesController extends AdminController {
 			$page->updated_at 	= date('Y-m-d H:i:s');
 			$page->save();
 
-			return Redirect::to('admin/pages')->with('success', 'You have successfully edited a page.');
+			return Redirect::route('pages.index')->with('success', 'You have successfully added a page.');
 		endif;
-	}	
+	}
 
-	public function getEdit()
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
 	{
-		$data['page'] 			= Posts::find(Request::segment(4));
-		$data['uri'] 			= Request::path();
+		//
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		$data['page'] 			= Posts::find($id);
 		$this->layout->content 	= View::make('admin.pages.edit', $data);
 	}
 
-	public function postEdit()
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
@@ -96,14 +126,13 @@ class PagesController extends AdminController {
 		);
 
 		$validator 				= Validator::make(Input::all(), $rules);
-		$data['uri'] 			= Request::path();
 
 		if ($validator->fails()) :
 
-			return Redirect::to(Request::path())->withErrors($validator)->withInput(Input::except('password'));
+			return Redirect::route('pages.edit', $id)->withErrors($validator)->withInput(Input::except('password'));
 		else:
 			
-			$page 				= Posts::find(Request::segment(4));
+			$page 				= Posts::find($id);
 			
 			//IF THE USER HAS UPLOADED A PROFILE IMAGE
 			if (Input::hasFile('userfile')):
@@ -131,35 +160,42 @@ class PagesController extends AdminController {
 			$page->updated_at 	= date('Y-m-d H:i:s');			
 			$page->save();
 
-			return Redirect::to('admin/pages')->with('success', 'You have successfully edited a page.');
-		endif;		
+			return Redirect::route('pages.index')->with('success', 'You have successfully edited a page.');
+		endif;
 	}
 
-	public function getDelete()
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
 	{
-		$page = Posts::find(Request::segment(4));
+		$page = Posts::find($id);
 		$page->delete();
 
-		return Redirect::to('admin/pages')->with('success', 'You have successfully deleted a page.');
-	}	
+		return Redirect::route('pages.index')->with('success', 'You have successfully deleted a page.');
+	}
 
-	public function getEnable()
+	public function enable()
 	{
 		//QUICK ENABLE PAGE
-		$page 				= Posts::find(Request::segment(4));
+		$page 				= Posts::find(Input::get('id'));
 		$page->status 		= 1;
 		$page->save();
 
-		return Redirect::to('admin/pages')->with('success', 'You have enabled the page.');
+		return Redirect::route('pages.index')->with('success', 'You have enabled the page.');
 	}
 
-	public function getDisable()
+	public function disable()
 	{
 		//QUICK DISABLE PAGE
-		$page 				= Posts::find(Request::segment(4));
+		$page 				= Posts::find(Input::get('id'));
 		$page->status 		= 0;
 		$page->save();
 
-		return Redirect::to('admin/pages')->with('error', 'You have disabled the page.');
-	}	
+		return Redirect::route('pages.index')->with('error', 'You have disabled the page.');
+	}
 }
