@@ -7,8 +7,8 @@ class IndexController extends FrontController {
 		parent::__construct();
 	}
 
-	public function getIndex()
-	{	
+	public function home()
+	{
 		$data['slides'] 		= Carousels::active()->get();
 		$data['records']		= Posts::active()->get();
 		

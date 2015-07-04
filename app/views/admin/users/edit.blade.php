@@ -16,7 +16,7 @@
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form')) }}
+		{{ Form::open(array('url' => URL::route("users.update", $user->id_user), 'role' => 'form', 'method' => 'put')) }}
 			<div class="form-group">
 				<label for="firstname">First Name <sup class="text text-danger">*</sup></label>
 				<input name="firstname" type="text" class="form-control" id="firstname" value="{{{ isset($user->firstname) ? $user->firstname : Input::old('firstname') }}}">
@@ -44,7 +44,7 @@
 				</select>
 			</div>
 			<div class="btn-group">
-				<a href="{{ URL::to('users/list') }}" class="btn btn-default">Go Back</a>
+				<a href="{{ URL::route('users.index') }}" class="btn btn-default">Go Back</a>
 				<button type="submit" class="btn btn-primary" name="edit">Submit</button>
 			</div>		
 		{{ Form::close() }}

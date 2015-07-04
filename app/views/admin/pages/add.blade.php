@@ -17,7 +17,7 @@
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form', 'files' => true)) }}
+		{{ Form::open(array('url' => URL::route('pages.store'), 'role' => 'form', 'files' => true)) }}
 			<div class="form-group">
 				<label for="title">Title <sup class="text text-danger">*</sup></label>
 				<input name="title" type="text" class="form-control" id="title" value="{{ Input::old('title') }}">

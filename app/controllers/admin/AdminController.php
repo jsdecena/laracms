@@ -2,6 +2,8 @@
 
 class AdminController extends BaseController {
 
+	public $post_type;	
+
 	public function __construct()
 	{
 		if (Auth::check()) :
@@ -16,6 +18,8 @@ class AdminController extends BaseController {
 					'website_name'  => $this->settingsValue('WEBSITE_NAME')
 				));
 		endif;
+
+		$this->beforeFilter('permission');
 
 		$this->layout 	= 'admin.tpl.main';		
 	}

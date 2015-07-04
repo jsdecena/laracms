@@ -17,7 +17,7 @@
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => $uri, 'role' => 'form', 'files' => true)) }}
+		{{ Form::open(array('url' => URL::route('posts.store'), 'role' => 'form', 'files' => true)) }}
 			<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">

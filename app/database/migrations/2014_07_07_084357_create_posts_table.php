@@ -13,16 +13,14 @@ class CreatePostsTable extends Migration {
 	public function up()
 	{
 		Schema::create('posts', function($table) {
-			$table->increments('id_post');
-			$table->string('post_type', 128);
-			$table->string('title', 128);
-			$table->string('slug', 128);
+			$table->increments('id_post', 10);
+			$table->string('post_type', 255);
+			$table->string('title', 255);
+			$table->string('slug', 255);
 			$table->text('content');
-			$table->string('img_src', 256)->nullable();
-			$table->string('post_cat', 11);
-			$table->string('status', 1);
+			$table->string('img_src', 255)->nullable();
+			$table->integer('status')->default(1);
 			$table->timestamps();
-			$table->engine = 'MyISAM';
 		});
 
 		DB::statement('ALTER TABLE posts ADD FULLTEXT search(title, content)');

@@ -17,7 +17,7 @@
         </ul>
     @endif
 
-	{{ Form::open(array('url' => Request::path(), 'role' => 'form', 'files' => true)) }}
+	{{ Form::open(array('url' => URL::route('posts.update', $post->id_post), 'role' => 'form', 'files' => true, 'method' => 'put')) }}
 		<div class="row">
 			<div class="col-md-12">
 				<div class="form-group">
@@ -34,12 +34,10 @@
 			<div class="col-md-8">
 				<div id="delete" class="form-group">
 					<label>Featured Image</label> <br />
-					@if(!empty($post->img_src))
+					@if(isset($post->img_src))
 						<img src="{{ asset("uploads/$post->img_src") }}" alt="" class="img-thumbnail" width="85" height="85" />
-					@else
-						<img src="{{ asset("uploads/no-photo.jpg") }}" alt="" class="img-thumbnail" width="85" height="85" />
+						<a onClick="return confirm('Are you sure you want to delete this featured image?')" href="{{URL::route("posts.featured.image.delete", "action=delete_featured_image&amp;filename=$post->img_src&amp;id=$post->id_post")}}" class="btn btn-danger">Delete</a>
 					@endif
-					<a href="#" @if(!empty($post->img_src)) class="btn btn-danger" @else class="btn btn-danger hidden" @endif>Delete</a>
 				</div>
 				<div class="form-group"><input name="userfile" type="file" class="form-control" id="img_src" value="" /></div>
 				
@@ -63,7 +61,7 @@
 			</div>
 		</div>
 		<div class="btn-group">
-			<a href="{{ URL::to('admin/posts/list') }}" class="btn btn-default">Go back</a>
+			<a href="{{ URL::route('posts.index') }}" class="btn btn-default">Go back</a>
 			<button class="btn btn-primary" name="edit" type="submit">Update post</button>
 		</div>
 	{{ Form::close() }}

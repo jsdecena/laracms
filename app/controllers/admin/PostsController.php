@@ -1,8 +1,6 @@
 <?php
 
-class PostsController extends AdminController {
-
-	public $post_type;
+class PostsController extends \AdminController {
 
 	public function __construct()
 	{
@@ -10,24 +8,19 @@ class PostsController extends AdminController {
 
 		$this->post_type = "post";
 		$this->beforeFilter('permission');
-	}
+	}	
 
-	public function getIndex()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
 	{
-		return $this->getList();
-	}
-
-	public function getList()
-	{
-
-		//CURRENT LOGGED USER  
-		$data['logged']			= User::find( Auth::id() );
-		//QUERY ALL THE USERS
-		$posts 			        = Posts::posts()->orderBy('created_at', 'DESC')->paginate(10);
-		
+		$posts 			        = Posts::posts()->orderBy('created_at', 'DESC')->paginate(10);	
 		$data['posts']			= $posts;
 
-		//Create AN ARRAY OF POSTS WITH THEIR CATEGORIES
+		//CREATE AN ARRAY OF POSTS WITH THEIR CATEGORIES
 		$posts_categories_arr   = array();
 
 		foreach ($posts as $post) :
@@ -40,15 +33,25 @@ class PostsController extends AdminController {
 		$this->layout->content 	= View::make('admin.posts.list', $data);
 	}
 
-	public function getAdd()
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
 	{
-		$data['uri'] 			= Request::path();
 		$data['categories']     = Categories::active()->orderBy('created_at', 'DESC' )->get();
-		// dd($data['categories'][0]);
 		$this->layout->content 	= View::make('admin.posts.add', $data);	
 	}
 
-	public function postAdd()
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
@@ -56,11 +59,9 @@ class PostsController extends AdminController {
 		);
 
 		$validator 				= Validator::make(Input::all(), $rules);
-		$data['uri'] 			= Request::path();
 
 		if ($validator->fails()) :
-
-			return Redirect::to(Request::path())->withErrors($validator);
+			return Redirect::route('posts.create')->withErrors($validator);
 		else:
 			
 			$post 				= new Posts;
@@ -130,22 +131,37 @@ class PostsController extends AdminController {
 
 			endif; 
 
-			 //INSERT TO POST CATEGORIES
+			return Redirect::route('posts.index')->with('success', 'You have successfully created a post.');
 
-			
-			return Redirect::to('admin/posts')->with('success', 'You have successfully edited a post.');
 		endif;
-	}	
+	}
 
-	public function getEdit()
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
 	{
-		$data['post'] 				 = Posts::find(Request::segment(4));
-		$data['uri'] 				 = Request::path();
-		$post_categories             = Posts::find( Request::segment(4) )->categories;
+		//
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		$data['post'] 				 = Posts::find($id);
+		$post_categories             = Posts::find($id)->categories;
 		
 		//ARRAY OF THE CATEGORIES OF THIS POST
 		$post_categories_arr 		 = array();
-
 		foreach ($post_categories as $category) :
 			array_push($post_categories_arr, $category->id_category);
 		endforeach;
@@ -156,32 +172,29 @@ class PostsController extends AdminController {
 		$this->layout->content 	= View::make('admin.posts.edit', $data);
 	}
 
-	public function postEdit()
-	{
 
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
+	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
 			'title'			=> 'required'
 		);
 
 		$validator 				= Validator::make(Input::all(), $rules);
-		$data['uri'] 			= Request::path();
 
 		if ($validator->fails()) :
-			if (Input::has('ajax')):
-				$this->ajaxPostProcess( Posts::find(Request::segment(4)) );
-				return Response::json( array(
-		            'result' => true
-		        ) );
-			else:
-				return Redirect::to(Request::path())->withErrors($validator)->withInput();
-			endif;
+			return Redirect::route('posts.edit', $id)->withErrors($validator)->withInput();
 		else:
-			$post 	= Posts::find(Request::segment(4));
-			
-			//AJAX DELETE FEATURED IMAGE
 
-			//IF THE USER HAS UPLOADED A PROFILE IMAGE
+			$post 	= Posts::find($id);
+
+			//IF THE USER HAS UPLOADED A FEATURED IMAGE
 			if (Input::hasFile('userfile')):
 
 				$path = public_path('uploads');
@@ -206,7 +219,7 @@ class PostsController extends AdminController {
 			$post->updated_at 	= date('Y-m-d H:i:s');			
 			$post->save();
 
-			$posts_categories   = Posts_Categories::where('id_post', '=', Request::segment(4))->delete();
+			$posts_categories   = Posts_Categories::where('id_post', '=', $id)->delete();
 
 			//GET THE ID OF LAST INSERTED POST
 			$categories 		= Input::get('categories'); 
@@ -217,7 +230,7 @@ class PostsController extends AdminController {
 			 		
 			 		$data 		= array(
 			 			
-			 			'id_post' 		=> Request::segment(4),
+			 			'id_post' 		=> $id,
 			 			'id_category'	=> $categories[$i],
 			 			'created_at'    => date('Y-m-d H:i:s'),
 			 			'updated_at'    => date('Y-m-d H:i:s')
@@ -232,7 +245,7 @@ class PostsController extends AdminController {
 			 	
 			 	$data           = array(
 
-			 			'id_post'       => Request::segment(4),
+			 			'id_post'       => $id,
 			 			'id_category'   => 1,
 			 			'created_at'    => date('Y-m-d H:i:s'),
 			 			'updated_at'    => date('Y-m-d H:i:s')
@@ -243,62 +256,58 @@ class PostsController extends AdminController {
 			endif; 
   
 
-			return Redirect::to('admin/posts')->with('success', 'You have successfully edited a post.');
-		endif;		
+			return Redirect::route('posts.index')->with('success', 'You have successfully edited a post.');
+		endif;
 	}
 
-	public function getDelete()
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
 	{
 		//DELETE IN POST
-		$post = Posts::find(Request::segment(4));
+		$post = Posts::find($id);
 		$post->delete();
 
 		//DELETE IN POST CATEGORIES
-		$posts_categories = Posts_Categories::post( Request::segment(4) )->delete();
+		$posts_categories = Posts_Categories::post($id)->delete();
 
-		return Redirect::to('admin/posts')->with('success', 'You have successfully deleted a post.');
-	}	
+		return Redirect::route('posts.index')->with('success', 'You have successfully deleted a post.');
+	}
 
-	public function getEnable()
+	public function enable()
 	{
-		//QUICK ENABLE post
-		$post 				= Posts::find(Request::segment(4));
+		//QUICK ENABLE PAGE
+		$post 				= Posts::find(Input::get('id'));
 		$post->status 		= 1;
 		$post->save();
 
-		return Redirect::to('admin/posts')->with('success', 'You have enabled the post.');
+		return Redirect::route('posts.index')->with('success', 'You have enabled the page.');
 	}
 
-	public function getDisable()
+	public function disable()
 	{
-		//QUICK DISABLE post
-		$post 				= Posts::find(Request::segment(4));
+		//QUICK DISABLE PAGE
+		$post 				= Posts::find(Input::get('id'));
 		$post->status 		= 0;
 		$post->save();
 
-		return Redirect::to('admin/posts')->with('error', 'You have disabled the post.');
+		return Redirect::route('posts.index')->with('error', 'You have disabled the page.');
 	}
 
-	/*
-	* @author: Albert Fajarito
-	* @param: post | ORM object
-	*/
-	protected function ajaxPostProcess( $post )
+	public function delete_image()
 	{
+		if (Input::get('action') == "delete_featured_image") {
+			
+			DB::table('posts')
+			            ->where('img_src', Input::get('filename'))
+			            ->update(array('img_src' => null));
 
-		$action 	= Input::get('action');		
-		$subject	= Input::get('subject');
-
-		if( strtoupper($action) == "REMOVE")
-		{
-			switch ( strtoupper($subject) )
-			{
-				case "FEATUREDIMG":
-					$post->img_src = "";
-					break;
-			}			
+			return Redirect::route("posts.edit", Input::get('id'))->with('success', 'You have deleted the image.');
 		}
-
-		$post->save();	
-	}
+	}	
 }
