@@ -55,10 +55,9 @@ Route::group(array('before' => 'auth'), function()
 	Route::controller('admin', 'AdminController');
 });
 
+/*PUBLIC FACING ROUTES*/
 Route::get('{slug}', 'FrontController@viewSlug');
 Route::get('/', 'IndexController@home');
-
-/*PUBLIC FACING ROUTES*/
 Route::get('contact', 'ContactController@index');
 Route::post('contact', 'ContactController@submit');
 
