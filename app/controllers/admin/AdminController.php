@@ -2,7 +2,9 @@
 
 class AdminController extends BaseController {
 
-	public $post_type;	
+	public $post_type;
+
+	public $table;
 
 	public function __construct()
 	{
@@ -89,5 +91,5 @@ class AdminController extends BaseController {
 		\Iseed::generateSeed(Input::get('backupdb'));
 
 		return Redirect::to('admin/backupdb')->with('success', 'You have successfully backup your database!');
-	}	
+	}
 }

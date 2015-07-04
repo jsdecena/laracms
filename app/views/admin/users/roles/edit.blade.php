@@ -16,7 +16,7 @@
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form', 'files' => true)) }}
+		{{ Form::open(array('url' => URL::route('roles.update', $role->id_role), 'role' => 'form', 'files' => true, 'method' => 'put')) }}
 			<div class="row">
 				<div class="col-md-12">
 					<div class="form-group">
@@ -47,7 +47,7 @@
 			</div>
 		
 			<div class="btn-group">
-				<a href="{{ URL::to('admin/users/roles') }}" class="btn btn-default">Go back</a>
+				<a href="{{ URL::route('roles.create') }}" class="btn btn-default">Go back</a>
 				<button class="btn btn-primary" name="edit" type="submit">Update role</button>
 			</div>
 			

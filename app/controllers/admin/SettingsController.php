@@ -1,19 +1,21 @@
 <?php
 
-class SettingsController extends AdminController {
-
-	public $table;
+class SettingsController extends \AdminController {
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->beforeFilter('role');
-		$this->beforeFilter('permission');
 
 		$this->table = "settings";
 	}
 
-	public function getIndex()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
 	{
 		$data['pages'] 			= Posts::pages()->orderBy('created_at', 'DESC')->get();
 		$data['WEBSITE_NAME'] 	= DB::table($this->table)->where('settings_name', 'WEBSITE_NAME')->pluck('settings_value');
@@ -25,7 +27,60 @@ class SettingsController extends AdminController {
 		$this->layout->content 	= View::make('admin.settings', $data);
 	}
 
-	public function postSettings()
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		//
+	}
+
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store()
+	{
+		//
+	}
+
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		//
+	}
+
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		//
+	}
+
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id)
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
@@ -36,7 +91,7 @@ class SettingsController extends AdminController {
 
 		if ($validator->fails()) :
 
-			return Redirect::to(Request::path())->withErrors($validator);
+			return Redirect::route('settings.index')->withErrors($validator);
 		else:
 
 			//GET ALL THE POST DATA
@@ -44,17 +99,29 @@ class SettingsController extends AdminController {
 
 			//LOOP THE POST DATA AND UPDATE
 			foreach ($posts as $key => $value) {
-				$this->update($key, $value);
+				$this->updateSettings($key, $value);
 			}
 			
-			return Redirect::to('admin/settings')->with('success', 'Your settings are successfully saved!');
-		endif;		
+			return Redirect::route('settings.index')->with('success', 'Your settings are successfully saved!');
+		endif;
 	}
 
-	public function update($key, $value)
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		//
+	}
+
+	public function updateSettings($key, $value)
 	{
 		DB::table($this->table)
 	            ->where('settings_name', $key)
 	            ->update(array('settings_value' => $value));
-	}
+	}	
 }

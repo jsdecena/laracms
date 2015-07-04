@@ -123,14 +123,9 @@ class CategoriesController extends \AdminController {
 	public function destroy($id)
 	{
 		/*CHECK IF THERE IS A POST ATTACHED TO THIS CATEGORY*/
-		$count 					= Posts::where('id_post', $id)->categories->get();
-
-		var_dump($count); die();
-		
-		if( $count > 0 ) :
+		if(Categories::find($id)->posts()->count()) :
 			return Redirect::route('categories.index')->with('error', 'Sorry, there is a post tagged in this category. Delete the post before you can delete the category.');
 		else:
-			
 			$category 				= Categories::find($id);
 			$category->delete();
 
@@ -138,5 +133,23 @@ class CategoriesController extends \AdminController {
 		endif;
 	}
 
+	public function enable()
+	{
+		//QUICK ENABLE PAGE
+		$category 				= Categories::find(Input::get('id'));
+		$category->status 		= 1;
+		$category->save();
 
+		return Redirect::route('categories.index')->with('success', 'You have enabled the page.');
+	}
+
+	public function disable()
+	{
+		//QUICK DISABLE PAGE
+		$category 				= Categories::find(Input::get('id'));
+		$category->status 		= 0;
+		$category->save();
+
+		return Redirect::route('categories.index')->with('error', 'You have disabled the page.');
+	}	
 }

@@ -3,19 +3,9 @@
 @section('body')
     
     <div id="content-body">
-	    {{-- CHECK IF THERE IS A SESSION MESSAGE FOR FAILED ATTEMPT --}}
-	    @if($errors->all())
-	        <ul class="list-unstyled">
-	            @foreach($errors->all() as $error)
-	                <li class="alert alert-danger">
-	                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-	                    {{ $error }}
-	                </li>
-	            @endforeach
-	        </ul>
-	    @endif
+    	@include('messages')
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form', 'files' => true)) }}
+		{{ Form::open(array('url' => URL::route('settings.update'), 'role' => 'form', 'files' => true, 'method' => 'put')) }}
 
 			<div class="form-group">
 				<label for="WEBSITE_NAME">Website Name :</label>

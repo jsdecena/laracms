@@ -20,7 +20,7 @@
 	        </ul>
 	    @endif
 
-		{{ Form::open(array('url' => Request::path(), 'role' => 'form', 'files' => true)) }}
+		{{ Form::open(array('url' => URL::route('carousels.store'), 'role' => 'form', 'files' => true)) }}
 			<div class="form-group">
 				<label for="title">Title</label>
 				<input name="title" type="text" class="form-control" id="title" placeholder="Title" value="{{Input::old('title')}}">
@@ -45,7 +45,7 @@
 				</select>
 			</div>		
 			<div class="btn-group">
-				<a href="{{ URL::to('admin/modules/carousels/list') }}" class="btn btn-default">Go Back</a>
+				<a href="{{ URL::route('carousels.index') }}" class="btn btn-default">Go Back</a>
 				<button type="submit" class="btn btn-primary" name="add">Submit</button>
 			</div>		
 		{{ Form::close() }}

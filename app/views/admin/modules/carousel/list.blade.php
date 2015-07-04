@@ -26,7 +26,9 @@
 					<th class="col-md-2">Title</th>
 					<th class="col-md-5">Content</th>
 					<th class="col-md-2">Image</th>
+					@if($logged->can('Edit'))
 					<th class="col-md-1"></th>
+					@endif
 					<th class="col-md-2">Actions</th>
 				</thead>
 				<tbody>
@@ -36,21 +38,29 @@
 							<td>{{ str_limit($carousel->description, 50, ' ...') }}</td>
 							<td>
 								@if(isset($carousel->img_src) && !empty($carousel->img_src))
-									<img src="{{ asset("uploads/$carousel->img_src") }}" alt="" width="85" height="64" />
+									<img class="img-responsive" src="{{ asset("uploads/$carousel->img_src") }}" alt="" width="85" height="64" />
 								@else
-									<img src="{{ asset("uploads/no-photo.jpg") }}" alt="" width="85" height="64" />
+									<img src="http://placehold.it/85x64" alt="" width="85" height="64" />
 								@endif
 							</td>
-							<td id="status">
-								@if( $carousel->status == 1 )
-									<a href="{{ URL::to("admin/modules/carousels/disable/$carousel->id_carousel") }}" class="btn btn-success {{ $logged->can('Edit') ? '' : 'disabled' }}"><i class="fa fa-check"></i> </a>
+							@if($logged->can('Edit'))
+							<td>
+								@if($carousel->status == 1)
+									<a onClick="return confirm('Disable?')" href="{{ URL::route("carousels.disable", "id=$carousel->id_carousel") }}" class="btn btn-success"><i class="fa fa-check"></i> </a>
 								@else
-									<a href="{{ URL::to("admin/modules/carousels/enable/$carousel->id_carousel") }}" class="btn btn-danger {{ $logged->can('Edit') ? '' : 'disabled' }}"><i class="fa fa-times"></i> </a>
+									<a onClick="return confirm('Enable?')" href="{{ URL::route("carousels.enable", "id=$carousel->id_carousel") }}" class="btn btn-danger"><i class="fa fa-times"></i> </a>
 								@endif
 							</td>
-							<td id="delete">
-								<a href="{{ URL::to("admin/modules/carousels/edit/$carousel->id_carousel") }}" class="btn btn-primary {{ $logged->can('Edit') ? '' : 'disabled' }} "><i class="glyphicon glyphicon-pencil"></i></a>
-								<a href="{{ URL::to("admin/modules/carousels/delete/$carousel->id_carousel") }}" class="btn btn-danger {{ $logged->can('Delete') ? '' : 'disabled' }} "><i class="glyphicon glyphicon-trash"></i></a>
+							@endif
+							<td>
+								{{Form::open(array('url' => URL::route('carousels.destroy', $carousel->id_carousel), 'method' => 'delete'))}}
+									@if($logged->can('Edit')) 
+										<a href="{{ URL::route("carousels.edit", $carousel->id_carousel) }}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i></a>
+									@endif
+									@if($logged->can('Delete')) 
+										<button onClick="return confirm('Are you sure you want to delete?')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>
+									@endif
+								{{Form::close()}}
 							</td>
 						</tr>
 					@endforeach
