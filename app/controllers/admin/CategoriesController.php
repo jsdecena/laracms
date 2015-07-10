@@ -151,5 +151,12 @@ class CategoriesController extends \AdminController {
 		$category->save();
 
 		return Redirect::route('categories.index')->with('error', 'You have disabled the page.');
-	}	
+	}
+
+	public function posts($id_category)
+	{
+		$data['posts'] 				= Categories::find($id_category)->posts()->paginate(10);
+
+		$this->layout->content 		= View::make('admin.categories.posts', $data);
+	}
 }

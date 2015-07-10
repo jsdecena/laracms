@@ -13,7 +13,7 @@ class SettingsTableSeeder extends DatabaseSeeder {
 
         Settings::create(array(
             'settings_name'     => 'WEBSITE_NAME',
-            'settings_value'    => 'Wedding Digest'
+            'settings_value'    => 'LaraCMS'
         ));
 
         Settings::create(array(

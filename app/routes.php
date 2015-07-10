@@ -16,16 +16,6 @@ Route::pattern('id_user', '[0-9]+'); //MUST BE NUMERICAL ONLY
 Route::pattern('id_page', '[0-9]+'); //MUST BE NUMERICAL ONLY
 /*============== END ROUTING PATTERNS ============== */
 
-/*LOGIN CONTROLLER MUST BE FIRST BEFORE THE AUTH*/
-Route::get('login', 'LoginController@index');
-Route::post('login', 'LoginController@submit');
-Route::get('logout', 'LoginController@logout');
-
-Route::get('password', 'LoginController@password');
-Route::post('password', 'LoginController@passwordSubmit');
-Route::get('password/reset/{token}', 'LoginController@password_reset');
-Route::post('password/reset/{token}', 'LoginController@password_reset_submit');
-
 /*ADMIN FACING ROUTES*/
 Route::group(array('before' => 'auth'), function()
 {	
@@ -44,6 +34,7 @@ Route::group(array('before' => 'auth'), function()
 	Route::get('posts/featured/image/delete', array('as' => 'posts.featured.image.delete', 'uses' => 'PostsController@delete_image'));
 	Route::resource('posts', 'PostsController');
 
+	Route::get('category/posts/{id_category}', array('as' => 'category.posts', 'uses' => 'CategoriesController@posts'));
 	Route::get('category/enable', array('as' => 'category.enable', 'uses' => 'CategoriesController@enable'));
 	Route::get('category/disable', array('as' => 'category.disable', 'uses' => 'CategoriesController@disable'));
 	Route::resource('categories', 'CategoriesController');
@@ -59,13 +50,21 @@ Route::group(array('before' => 'auth'), function()
 	Route::controller('admin', 'AdminController');
 });
 
-Route::get('{slug}', 'FrontController@viewSlug');
-Route::get('/', 'IndexController@home');
+Route::post('password', 						array('as' => 'password.submit', 		'uses' => 'LoginController@passwordSubmit'));
+Route::get('password', 							array('as' => 'password.form', 			'uses' => 'LoginController@passwordReset'));
 
-/*PUBLIC FACING ROUTES*/
-Route::get('contact', 'ContactController@index');
-Route::post('contact', 'ContactController@submit');
+Route::post('password/reset/{token}', 			array('as' => 'password.reset.submit', 	'uses' => 'LoginController@passwordResetSubmit'));
+Route::get('password/reset/{token}', 			array('as' => 'password.reset.form', 	'uses' => 'LoginController@passwordResetForm'));
 
-/*@param $category - Name of the category*/
-Route::get('categories/{category}', 'FrontController@category');
-Route::get('search', 'FrontController@search');
+Route::get('logout/submit', 					array('as' => 'logout.submit', 			'uses' => 'LoginController@logout'));
+Route::post('login/submit', 					array('as' => 'login.submit', 			'uses' => 'LoginController@login'));
+
+Route::resource('login', 						'LoginController');
+
+Route::get('cat/{slug}', 						array('as' => 'show.cat', 				'uses' => 'FrontCategoriesController@showCatPosts'));
+Route::resource('cat',		 					'FrontCategoriesController');
+
+Route::get('search', 							array('as' => 'search', 				'uses' => 'FrontController@search'));
+
+Route::resource('post',		 					'FrontPostsController');
+Route::get('/', 								array('as' => 'home', 'uses' => 'IndexController@home'));

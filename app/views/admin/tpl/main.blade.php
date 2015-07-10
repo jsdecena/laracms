@@ -113,7 +113,7 @@
                                         <a href="{{ URL::route("users.account", "id=" . Auth::id()) }}" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="{{ URL::to('logout') }}" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="{{ URL::route('logout.submit') }}" class="btn btn-default btn-flat">Log out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -139,7 +139,7 @@
                         </div>
                         <div class="pull-left info">
                             <p>Hello, {{{ isset($name) ? $name : null }}}</p>
-                            <a class="btn btn-primary" href="{{ URL::to('logout') }}">Logout</a>
+                            <a class="btn btn-primary" href="{{ URL::route('logout.submit') }}">Logout</a>
                             <a href="{{ URL::route("users.account", "id=" . Auth::id()) }}" class="btn btn-primary">Profile</a>
                         </div>
                     </div>
