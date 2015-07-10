@@ -61,7 +61,6 @@ Route::post('login/submit', 					array('as' => 'login.submit', 			'uses' => 'Log
 
 Route::resource('login', 						'LoginController');
 
-Route::get('cat/{slug}', 						array('as' => 'show.cat', 				'uses' => 'FrontCategoriesController@showCatPosts'));
 Route::resource('cat',		 					'FrontCategoriesController');
 
 Route::get('search', 							array('as' => 'search', 				'uses' => 'FrontController@search'));

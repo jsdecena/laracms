@@ -21,7 +21,7 @@
 					@foreach($categories as $category)
 					<tr>
 						<td>{{ $category->id_category }}</td>
-						<td>{{ str_limit($category->category, 20, ' ...') }}</td>
+						<td>{{ str_limit($category->name, 20, ' ...') }}</td>
 						<td>{{ str_limit($category->description, 150, ' ...') }}</td>
 						@if($logged->can('Edit'))
 						<td>
