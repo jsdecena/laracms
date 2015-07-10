@@ -81,7 +81,6 @@ class PostsController extends \AdminController {
 
 			$categories 		= Input::get('categories'); 
 			
-			
 			if( is_array($categories) ) :
 				// LOOP FOR CATEGORIES 
 			 	for ( $i = 0;  $i < count($categories); $i++ ) :
@@ -101,7 +100,7 @@ class PostsController extends \AdminController {
 			 
 			else :
 			 	
-			 	$data           = array(
+			 	$data = array(
 
 			 			'id_post'       => $id_post,
 			 			'id_category'   => 1,
@@ -184,7 +183,11 @@ class PostsController extends \AdminController {
 			
 			//SAVE ALSO THE CATEGORY IDS IN THE PIVOT TABLE
 			if($post->save())
-				$post->categories()->sync(Input::get('categories'));
+				if (Input::has('categories'))
+					$post->categories()->sync(Input::get('categories'));
+				else
+					$post->categories()->sync(array('1')); //PUT IT IN THE UNCATEGORIZED CATEGORY
+				
 
 			return Redirect::route('posts.index')->with('success', 'You have successfully edited a post.');
 		endif;

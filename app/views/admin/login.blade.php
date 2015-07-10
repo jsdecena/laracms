@@ -6,7 +6,7 @@
     <div class="form-box" id="login-box">
         <div class="header">Log In</div>
         
-        {{ Form::open(array('url' => Request::path())) }}
+        {{ Form::open(array('url' => URL::route('login.submit'))) }}
 
             <div class="body bg-gray">
                 @include('messages')
@@ -22,7 +22,7 @@
             </div>
             <div class="footer">                                                               
                 <button type="submit" class="btn bg-olive btn-block">Log me in</button>  
-                <p><a href="{{ URL::to('password') }}">I forgot my password</a></p>
+                <p><a href="{{ URL::route('password.form') }}">I forgot my password</a></p>
             </div>
         </form>
     </div>
