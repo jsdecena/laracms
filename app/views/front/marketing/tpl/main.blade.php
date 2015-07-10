@@ -14,25 +14,25 @@
     <title>Xfinity CMS - Theme by Twitter Bootstrap Justified Nav</title>
    
    @section('header')
-       {{ HTML::style('themes/front/marketing/css/bootstrap.min.css') }}
-       {{ HTML::style('themes/front/marketing/css/style.css') }}
+       {{ HTML::style('themes/front/'.$theme.'/css/bootstrap.min.css') }}
+       {{ HTML::style('themes/front/'.$theme.'/css/style.css') }}
    @show
   </head>
 
   <body>
     <div class="container">
-      @include('front.marketing.header')
+      @include('front.'.$theme.'.header')
 
       @yield('body')
       
-      @include('front.marketing.footer')
+      @include('front.'.$theme.'.footer')
 
     </div> <!-- /container -->
 
     {{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js') }}
-    {{ HTML::script('themes/front/marketing/js/bootstrap.min.js') }}
-    {{ HTML::script('themes/front/marketing/js/front.js') }}
-    {{ HTML::script('themes/front/marketing/js/ie10-viewport-bug-workaround.js') }}
+    {{ HTML::script('themes/front/'.$theme.'/js/bootstrap.min.js') }}
+    {{ HTML::script('themes/front/'.$theme.'/js/front.js') }}
+    {{ HTML::script('themes/front/'.$theme.'/js/ie10-viewport-bug-workaround.js') }}
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
