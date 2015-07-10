@@ -8,6 +8,7 @@ class FrontController extends BaseController {
 
 		View::share(array(
 				'pages' 			=> Posts::pages()->where('status', 1)->get(),
+				'categories'		=> Categories::active()->get(),
 				'theme' 			=> $this->theme->theme,
 				'shortcut'			=> URL::asset('themes/front/'.$this->theme->theme.'/img/favicon.ico'),
 				'favicon'			=> URL::asset('themes/front/'.$this->theme->theme.'/img/favicon.ico'),
@@ -37,5 +38,14 @@ class FrontController extends BaseController {
 			$this->layout->content 		= View::make('front.'.$this->theme->theme.'.search', $data);
 		
 		endif;
+	}
+
+	protected function customPagination($data, $perPage, $page = null)
+	{
+		$page = $page ? (int) $page * 1 : Input::get(Paginator::getPageName(), 1);
+		
+		$offset = ($page * $perPage) - $perPage;
+		
+		return Paginator::make(array_slice($data, $offset, $perPage, true), count($data), $perPage);
 	}
 }

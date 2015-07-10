@@ -19,7 +19,7 @@
    {{ HTML::style('https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic') }}
    {{ HTML::style('https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800') }}   
 
-   {{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js') }}
+   {{ HTML::script('themes/front/'.$theme.'/js/jquery.min.js') }}
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -36,6 +36,6 @@
     @include('front.'.$theme.'.footer')
 
     {{ HTML::script('themes/front/'.$theme.'/js/bootstrap.min.js') }}
-    {{ HTML::script('themes/front/'.$theme.'/js/clean-blog.min.js') }}  
+    {{ HTML::script('themes/front/'.$theme.'/js/clean-blog.js') }}  
   </body>
 </html>

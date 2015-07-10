@@ -5,7 +5,7 @@
 		
 		@include('messages')
 	    
-	    @if( isset($posts) && !empty($posts) )
+	    @if( !$posts->isEmpty() )
 			<table class="table table-striped">
 				<thead>
 					<th class="col-md-1">ID</th>
@@ -48,7 +48,7 @@
 					@endforeach
 				</tbody>
 			</table>
-		{{ $posts->links() }}
+			{{ $posts->links() }}
 		@else
 			<p class="alert alert-danger">Sorry, not post to show.</p>
 		@endif

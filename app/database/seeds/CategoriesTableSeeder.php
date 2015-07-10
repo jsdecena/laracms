@@ -7,7 +7,8 @@ class CategoriesTableSeeder extends DatabaseSeeder {
         DB::table('categories')->delete();
 
         Categories::create(array(
-            'category'       => 'Uncategorized',
+            'name'       	 => 'Uncategorized',
+            'slug'			 => 'uncategorized',
             'description'    => 'uncategorized',
             'status'         => 0
         ));

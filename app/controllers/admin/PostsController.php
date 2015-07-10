@@ -65,6 +65,7 @@ class PostsController extends \AdminController {
 		else:
 			
 			$post 				= new Posts;
+			$post->id_user 		= Auth::id();
 			$post->post_type 	= $this->post_type;
 			$post->title 		= Input::get('title');
 			$post->slug 		= Str::slug(Input::get('title'));

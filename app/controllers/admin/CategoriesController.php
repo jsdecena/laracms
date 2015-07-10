@@ -45,6 +45,7 @@ class CategoriesController extends \AdminController {
 			
 			$categories 				= new Categories;
 			$categories->category 		= Input::get('category');
+			$categories->slug 			= Str::slug(Input::get('category'));
 			$categories->description 	= Input::get('description');
 			$categories->status 		= Input::get('status');
 			$categories->created_at 	= date('Y-m-d H:i:s');
@@ -91,23 +92,22 @@ class CategoriesController extends \AdminController {
 	{
 	    //VALIDATE THE INPUTS SUBMITTED
 		$rules = array(
-			'category'			=> 'required'
+			'name'			=> 'required'
 		);
 
 		$validator 				= Validator::make(Input::all(), $rules);
-		$data['uri'] 			= Request::path();
 
 		if ($validator->fails()) :
-
-			return Redirect::to(Request::path())->withErrors($validator)->withInput(Input::except('password'));
+			return Redirect::route('categories.edit', $id)->withErrors($validator)->withInput();
 		else:
 			
-			$category 				= Categories::find($id);
-			$category->category 	= Input::get('category');
-			$category->description 	= Input::get('description');
-			$category->status 		= Input::get('status');
-			$category->updated_at 	= date('Y-m-d H:i:s');			
-			$category->save();
+			$categories 				= Categories::find($id);
+			$categories->name 			= Input::get('name');
+			$categories->slug 			= Str::slug(Input::get('name'));
+			$categories->description 	= Input::get('description');
+			$categories->status 		= Input::get('status');
+			$categories->updated_at 	= date('Y-m-d H:i:s');			
+			$categories->save();
 
 			return Redirect::route('categories.index')->with('success', 'You have successfully edited a category.');
 		endif;	

@@ -17,33 +17,25 @@
             </button>
             <a class="navbar-brand" href="{{URL::route('home')}}">Clean Blog</a>
         </div>
-
+        
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
+        <div id="primary_nav_wrap" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right cleanmenu">
                 <li><a href="{{URL::route('home')}}">Home</a></li>
                 @foreach($pages as $page)
                     <li><a href="{{URL::route('page.show', $page->slug)}}">{{$page->title}}</a></li>
                 @endforeach
+                <li>                 
+                    <a href="#">Categories <i class="fa fa-chevron-down"></i></a>
+                    <ul class="list-unstyled">
+                        @foreach($categories as $category)
+                            <li><a href="{{URL::route('cat.show', $category->slug)}}">{{$category->name}}</a></li>
+                        @endforeach
+                    </ul>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
-
-<!-- Page Header -->
-<!-- Set your background image for this header on the line below. -->
-<header class="intro-header" style="background-image: url('{{URL::to('themes/front/clean/img/home-bg.jpg')}}')">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>Clean Blog</h1>
-                    <hr class="small">
-                    <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
