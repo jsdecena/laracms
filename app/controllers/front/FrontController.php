@@ -7,34 +7,13 @@ class FrontController extends BaseController {
 		parent::__construct();
 
 		View::share(array(
-				'pages' 			=> Posts::pages()->orderBy('created_at', 'DESC')->get()
+				'pages' 			=> Posts::pages()->where('status', 1)->get(),
+				'theme' 			=> $this->theme->theme,
+				'shortcut'			=> URL::asset('themes/front/'.$this->theme->theme.'/img/favicon.ico'),
+				'favicon'			=> URL::asset('themes/front/'.$this->theme->theme.'/img/favicon.ico'),
 			));
 		
 		$this->layout = 'front.'.$this->theme->theme.'.tpl.main';
-	}
-
-	public function viewSlug()
-	{
-		$theme						= Themes::active()->first();
-		/*RETURN THE PAGE BEING VIEWED*/
-		$data['record']				= Posts::view(Request::segment(1));
-		$this->layout->content 		= View::make('front.'.$this->theme->theme.'.page', $data);
-	}
-
-	public function category()
-	{
-		$theme					= Themes::active()->first();
-		$data['category']		= Categories::find(Request::segment(2));
-		$data['posts'] 			= DB::table('posts')
-									        ->join('categories', function($join)
-									        {
-									            $join->on('categories.id_category', '=', 'posts.post_cat')
-									                 ->where('posts.post_cat', '=', Request::segment(2))
-									                 ->where('posts.status', '=', 1);
-									        })
-									        ->paginate(10);
-
-		$this->layout->content 		= View::make('front.'.$this->theme->theme.'.category', $data);
 	}
 
 	public function search()
@@ -58,6 +37,5 @@ class FrontController extends BaseController {
 			$this->layout->content 		= View::make('front.'.$this->theme->theme.'.search', $data);
 		
 		endif;
-
 	}
 }

@@ -14,6 +14,8 @@ class CreatePostsTable extends Migration {
 	{
 		Schema::create('posts', function($table) {
 			$table->increments('id_post', 10);
+			$table->integer('id_user')->unsigned();
+			$table->foreign('id_user')->references('id_user')->on('users');			
 			$table->string('post_type', 255);
 			$table->string('title', 255);
 			$table->string('slug', 255);
@@ -34,7 +36,8 @@ class CreatePostsTable extends Migration {
 	public function down()
 	{
 		Schema::table('posts', function($table)
-		{	
+		{
+			$table->dropForeign(array('id_user'));
 			$table->dropIndex('search');
 			$table->drop();
 		});

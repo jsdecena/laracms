@@ -8,7 +8,7 @@ class Posts extends Eloquent {
     /* === QUERY SCOPES ===*/
     public function scopePages($query)
     {
-        return $query->where('post_type', 'page');
+        return $query->where('post_type', 'page')->orderBy('created_at', 'DESC');
     }
     
     public function scopePosts($query)
@@ -18,7 +18,7 @@ class Posts extends Eloquent {
 
     public function scopeActive($query)
     {
-        return $query->where('status', '1');
+        return $query->where('status', 1);
     }
 
     /* === END QUERY SCOPES ===*/
@@ -36,5 +36,10 @@ class Posts extends Eloquent {
 
     public function categories(){
         return $this->belongsToMany('Categories', 'posts_categories', 'id_post', 'id_category');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('User');
     }
 }

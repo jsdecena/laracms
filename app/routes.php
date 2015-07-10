@@ -66,5 +66,6 @@ Route::resource('cat',		 					'FrontCategoriesController');
 
 Route::get('search', 							array('as' => 'search', 				'uses' => 'FrontController@search'));
 
-Route::resource('post',		 					'FrontPostsController');
+Route::resource('post',		 					'FrontPostController');
+Route::resource('page',		 					'FrontPageController');
 Route::get('/', 								array('as' => 'home', 'uses' => 'IndexController@home'));
