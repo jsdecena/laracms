@@ -54,7 +54,7 @@
 					<label for="status">Categories</label>
 					<ul id="checkbox-list" class="list-unstyled">
 						@foreach($categories as $category)
-							<li> <input type="checkbox" class="form-control" name="categories[]" @if( in_array($category->id_category, $post_categories_arr) ) checked @endif value="{{$category->id_category}}"/> {{$category->category}}</li>
+							<li> <input type="checkbox" class="form-control" name="categories[]" @if( in_array($category->id_category, $post_categories_arr) ) checked @endif value="{{$category->id_category}}"/> {{$category->name}}</li>
 						@endforeach
 					</ul>
 				</div>

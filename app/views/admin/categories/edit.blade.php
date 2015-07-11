@@ -9,7 +9,7 @@
 			
 			<div class="form-group">
 				<label for="category">Title <sup class="text text-danger">*</sup></label>
-				<input name="category" type="text" class="form-control" id="category" value="{{{ isset($category->category) ? $category->category : Input::old('category') }}}">
+				<input name="name" type="text" class="form-control" id="category" value="{{{ isset($category->name) ? $category->name : Input::old('name') }}}">
 			</div>
 			<div class="form-group">
 				<label for="description">Description</label>

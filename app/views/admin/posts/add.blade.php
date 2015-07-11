@@ -49,7 +49,7 @@
 						<label for="status">Categories</label>
 						<ul id="checkbox-list" style="list-style-type:none; padding:0px; ">
 							@foreach($categories as $category)
-								<li> <input type="checkbox" class="form-control" name="categories[]" value="{{$category->id_category}}"/> {{$category->category}}</li>
+								<li> <input type="checkbox" class="form-control" name="categories[]" value="{{$category->id_category}}"/> {{$category->name}}</li>
 							@endforeach
 						</ul>
 					</div>

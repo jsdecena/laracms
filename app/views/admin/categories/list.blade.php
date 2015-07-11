@@ -21,7 +21,7 @@
 					@foreach($categories as $category)
 					<tr>
 						<td>{{ $category->id_category }}</td>
-						<td>{{ str_limit($category->category, 20, ' ...') }}</td>
+						<td>{{ str_limit($category->name, 20, ' ...') }}</td>
 						<td>{{ str_limit($category->description, 150, ' ...') }}</td>
 						@if($logged->can('Edit'))
 						<td>
@@ -38,7 +38,10 @@
 						<td>
 							@if($category->id_category != 1)
 								{{Form::open(array('url' => URL::route('categories.destroy', $category->id_category), 'method' => 'delete'))}}
-									@if($logged->can('Edit'))<a href="{{ URL::route("categories.edit", $category->id_category) }}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Edit</a>@endif
+									<a href="{{URL::route('category.posts', $category->id_category)}}" class="btn btn-default"> <i class="fa fa-file-o fa-fw"></i> View posts</a>
+									@if($logged->can('Edit'))
+										<a href="{{ URL::route("categories.edit", $category->id_category) }}" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
+									@endif
 									@if($logged->can('Delete'))
 										<button onClick="return confirm('Are you sure you want to delete the category?')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button>
 									@endif

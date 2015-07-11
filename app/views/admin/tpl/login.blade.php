@@ -23,7 +23,7 @@
         @yield('body')
 
         @section('footer')
-        {{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js') }}
+        {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js') }}
         {{ HTML::script('themes/admin/js/bootstrap.min.js') }}
         @show
     </body>

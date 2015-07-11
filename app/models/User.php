@@ -40,4 +40,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return in_array($permission, array_fetch( $this->permissions->toArray(), 'permission') );
 	}
 
+    public function posts()
+    {
+        return $this->hasMany('Posts');
+    }	
+
 }

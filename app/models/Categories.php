@@ -8,12 +8,12 @@ class Categories extends Eloquent {
 	
 	public function scopeActive($query)
 	{
-		return $query->where('status', '1');
+		return $query->where('status', 1);
 	}
 
     public function posts()
     {
-        return $this->belongsToMany('Posts', 'posts_categories', 'id_category', 'id_post');
+        return $this->belongsToMany('Posts', 'posts_categories', 'id_category', 'id_post')->orderBy('created_at', 'desc');
     }
 	
 }
