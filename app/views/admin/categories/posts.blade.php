@@ -24,7 +24,7 @@
 						<td class="hidden-xs">{{ str_limit($post->content, 150, ' ...') }}</td>
 						<td class="hidden-xs">
 							@foreach($post['categories'] as $category)
-								<span class="label label-default">{{$category->category}}</span>&nbsp;
+								<span class="label label-default">{{$category->name}}</span>&nbsp;
 							@endforeach
 						</td>
 						@if($logged->can('Edit'))

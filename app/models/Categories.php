@@ -13,7 +13,7 @@ class Categories extends Eloquent {
 
     public function posts()
     {
-        return $this->belongsToMany('Posts', 'posts_categories', 'id_category', 'id_post');
+        return $this->belongsToMany('Posts', 'posts_categories', 'id_category', 'id_post')->orderBy('created_at', 'desc');
     }
 	
 }

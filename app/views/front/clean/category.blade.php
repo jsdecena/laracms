@@ -23,7 +23,14 @@
 		            <div class="row">
 		                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 		                    <h1><a href="{{URL::route('post.show', $record['post']->slug)}}">{{$record['post']->title}}</a></h1>
-		                    <p class="post-meta">Posted by <a href="#">{{$record['author']->firstname}}</a> on {{date('M d Y', strtotime($record['post']->created_at))}}</p>
+		                    <p class="post-meta">
+                                Posted by <a href="#">{{$record['author']->firstname}}</a> on {{date('M d Y', strtotime($record['post']->created_at))}}
+                                in 
+                                    <?php $categories = Posts::find($record['post']->id_post)->categories; ?>
+                                    @foreach($categories as $category) 
+                                        <a href="{{URL::route('cat.show', $category->slug)}}"> <em>{{$category->name}}</em></a> 
+                                    @endforeach
+                            </p>
 		                    {{$record['post']->content}}
 		                </div>
 		            </div>

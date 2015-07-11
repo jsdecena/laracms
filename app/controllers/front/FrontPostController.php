@@ -49,8 +49,9 @@ class FrontPostController extends \FrontController {
 	public function show($slug)
 	{
 		//GET THE PAGE
-		$data['post'] 			= Posts::posts()->where('slug', $slug)->first();
-		$data['author'] 		= User::find($data['post']->id_user);
+		$data['post'] 					= Posts::posts()->where('slug', $slug)->first();
+		$data['post']['categories'] 	= Posts::find($data['post']->id_post)->categories;
+		$data['author'] 				= User::find($data['post']->id_user);
 
 		$this->layout->content 	= View::make('front.'.$this->theme->theme.'.post', $data);
 	}

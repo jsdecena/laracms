@@ -44,7 +44,7 @@ class CategoriesController extends \AdminController {
 		else:
 			
 			$categories 				= new Categories;
-			$categories->category 		= Input::get('category');
+			$categories->name 			= Input::get('category');
 			$categories->slug 			= Str::slug(Input::get('category'));
 			$categories->description 	= Input::get('description');
 			$categories->status 		= Input::get('status');
