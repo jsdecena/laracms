@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#primary_nav_wrap">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -25,14 +25,16 @@
                 @foreach($pages as $page)
                     <li><a href="{{URL::route('page.show', $page->slug)}}">{{$page->title}}</a></li>
                 @endforeach
-                <li>                 
-                    <a href="javascript: void(0)">Categories <i class="fa fa-chevron-down"></i></a>
-                    <ul class="list-unstyled">
-                        @foreach($categories as $category)
-                            <li><a href="{{URL::route('cat.show', $category->slug)}}">{{$category->name}}</a></li>
-                        @endforeach
-                    </ul>
-                </li>
+                @if(isset($categories))
+                    <li>                 
+                        <a href="javascript: void(0)">Categories <i class="fa fa-chevron-down"></i></a>
+                        <ul class="list-unstyled">
+                            @foreach($categories as $category)
+                                <li><a href="{{URL::route('cat.show', $category->slug)}}">{{$category->name}}</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                @endif
             </ul>
         </div>
         <!-- /.navbar-collapse -->

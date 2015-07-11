@@ -57,11 +57,11 @@ class FrontCategoriesController extends \FrontController {
 		$blogPosts = array();
 		foreach ($posts as $key => $post) {
 			
-			$blogPosts[$key]['post'] 	= $post;
+			$blogPosts[$key]['post'] 				= $post;
 
 			//GET THE AUTHOR
-			$author 					= User::find($post->id_user);
-			$blogPosts[$key]['author'] 	= $author;
+			$author 								= User::find($post->id_user);
+			$blogPosts[$key]['author'] 				= $author;
 		}
 
 		$data['records']		= $this->customPagination($blogPosts, 10);
