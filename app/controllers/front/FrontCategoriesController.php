@@ -48,7 +48,25 @@ class FrontCategoriesController extends \FrontController {
 	 */
 	public function show($slug)
 	{
-		//
+		//GET THE CATEGORY
+		$data['category'] 		= Categories::where('slug', $slug)->first();
+
+		$posts 					= Categories::find($data['category']->id_category)->posts;
+
+		//GET THE POSTS TIED TO THIS CATEGORY
+		$blogPosts = array();
+		foreach ($posts as $key => $post) {
+			
+			$blogPosts[$key]['post'] 	= $post;
+
+			//GET THE AUTHOR
+			$author 					= User::find($post->id_user);
+			$blogPosts[$key]['author'] 	= $author;
+		}
+
+		$data['records']		= $this->customPagination($blogPosts, 10);
+
+		$this->layout->content 	= View::make('front.'.$this->theme->theme.'.category', $data);
 	}
 
 

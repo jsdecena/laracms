@@ -26,7 +26,7 @@
                     <li><a href="{{URL::route('page.show', $page->slug)}}">{{$page->title}}</a></li>
                 @endforeach
                 <li>                 
-                    <a href="#">Categories <i class="fa fa-chevron-down"></i></a>
+                    <a href="javascript: void(0)">Categories <i class="fa fa-chevron-down"></i></a>
                     <ul class="list-unstyled">
                         @foreach($categories as $category)
                             <li><a href="{{URL::route('cat.show', $category->slug)}}">{{$category->name}}</a></li>

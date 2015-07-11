@@ -10,6 +10,7 @@
                     <div class="site-heading">
                         <h1>{{$post->title}}</h1>
                         <hr class="small">
+                        <p class="post-meta">Posted by <a href="#">{{$author->firstname}}</a> on {{date('M d Y', strtotime($post->created_at))}}</p>
                     </div>
                 </div>
             </div>
@@ -26,6 +27,5 @@
             </div>
         </div>
     </article>
-
     <hr>
 @stop
