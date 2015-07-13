@@ -24,6 +24,7 @@
    <link media="all" type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
    
    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-sanitize.js"></script>
 
    <script type="text/javascript" src="http://localhost:8000/angular/app.js"></script>
 
@@ -49,13 +50,11 @@
             <div id="primary_nav_wrap" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right cleanmenu">
                     <li><a href="http://localhost:8000">Home</a></li>
-                                        <li><a href="http://localhost:8000/page/blog">Blog</a></li>
-                                                        <li>                 
-                            <a href="javascript: void(0)">Categories <i class="fa fa-chevron-down"></i></a>
-                            <ul class="list-unstyled">
-                                                        </ul>
-                        </li>
-                                </ul>
+                    <li><a href="http://localhost:8000/page/blog">Blog</a></li>
+                    <li><a href="javascript: void(0)">Categories <i class="fa fa-chevron-down"></i></a>
+                        <ul class="list-unstyled"></ul>
+                    </li>
+                </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -83,8 +82,8 @@
 
                 <div class="post-preview" ng-repeat="post in postsList">
                     <h2 class="post-title"><a href="http://localhost:8000/post/lorem-ipsum-dolor-sit-amet"> <% post.title %></a></h2>
-                    <p class="post-meta">Posted by <a href="#">John</a> on Jul 10 2015</p>
-                    <div class="post-content"><pre><% post.content %></pre></div>
+                    <p class="post-meta">Posted by <a href="#"><% post.firstname %></a> on <% post.created_at | date : "longDate" %></p>
+                    <div class="post-content" ng-bind-html="getHtml(post.content)"></div>
                 </div>
                 <hr>
             </div>

@@ -25,7 +25,7 @@
                 @foreach($pages as $page)
                     <li><a href="{{URL::route('page.show', $page->slug)}}">{{$page->title}}</a></li>
                 @endforeach
-                @if(isset($categories))
+                @if(!$categories->isEmpty())
                     <li>                 
                         <a href="javascript: void(0)">Categories <i class="fa fa-chevron-down"></i></a>
                         <ul class="list-unstyled">

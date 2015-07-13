@@ -10,7 +10,7 @@ class FrontPostController extends \BaseController {
 	{
 		$data['slides'] 		= Carousels::active()->get();
 
-		$posts 					= Posts::posts()->get();
+		$posts 					= Posts::posts()->active()->orderBy('created_at', 'desc')->get();
 
 		$blogPosts = array();
 		foreach ($posts as $key => $post) {
@@ -24,7 +24,7 @@ class FrontPostController extends \BaseController {
 
 		$data['records']		= $blogPosts;
 
-		return Response::json($posts);
+		return Response::json($blogPosts);
 	}
 
 
