@@ -16,6 +16,10 @@ Route::pattern('id_user', '[0-9]+'); //MUST BE NUMERICAL ONLY
 Route::pattern('id_page', '[0-9]+'); //MUST BE NUMERICAL ONLY
 /*============== END ROUTING PATTERNS ============== */
 
+Route::group(array('prefix'=>'/api/v1'),function(){
+	Route::resource('posts', 'FrontPostController');
+});
+
 /*ADMIN FACING ROUTES*/
 Route::group(array('before' => 'auth'), function()
 {	
@@ -50,21 +54,22 @@ Route::group(array('before' => 'auth'), function()
 	Route::controller('admin', 'AdminController');
 });
 
+
 Route::post('password', 						array('as' => 'password.submit', 		'uses' => 'LoginController@passwordSubmit'));
 Route::get('password', 							array('as' => 'password.form', 			'uses' => 'LoginController@passwordReset'));
-
 Route::post('password/reset/{token}', 			array('as' => 'password.reset.submit', 	'uses' => 'LoginController@passwordResetSubmit'));
 Route::get('password/reset/{token}', 			array('as' => 'password.reset.form', 	'uses' => 'LoginController@passwordResetForm'));
-
 Route::get('logout/submit', 					array('as' => 'logout.submit', 			'uses' => 'LoginController@logout'));
 Route::post('login/submit', 					array('as' => 'login.submit', 			'uses' => 'LoginController@login'));
-
 Route::resource('login', 						'LoginController');
-
-Route::resource('cat',		 					'FrontCategoriesController');
 
 Route::get('search', 							array('as' => 'search', 				'uses' => 'FrontController@search'));
 
+/*Route::resource('cat',		 					'FrontCategoriesController');
 Route::resource('post',		 					'FrontPostController');
 Route::resource('page',		 					'FrontPageController');
-Route::get('/', 								array('as' => 'home', 'uses' => 'IndexController@home'));
+Route::get('/', 								array('as' => 'home', 'uses' => 'IndexController@home'));*/
+
+App::missing(function($exception) { 
+    return View::make('front.clean.index');
+});

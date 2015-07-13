@@ -1,12 +1,6 @@
 <?php
 
-class FrontPostController extends \FrontController {
-
-	public function __construct()
-	{
-		parent::__construct();
-	}	
-
+class FrontPostController extends \BaseController {
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -14,7 +8,23 @@ class FrontPostController extends \FrontController {
 	 */
 	public function index()
 	{
-		//
+		$data['slides'] 		= Carousels::active()->get();
+
+		$posts 					= Posts::posts()->get();
+
+		$blogPosts = array();
+		foreach ($posts as $key => $post) {
+			
+			$blogPosts[$key]['post'] 	= $post;
+
+			//GET THE AUTHOR
+			$author 					= User::find($post->id_user);
+			$blogPosts[$key]['author'] 	= $author;
+		}
+
+		$data['records']		= $blogPosts;
+
+		return Response::json($posts);
 	}
 
 

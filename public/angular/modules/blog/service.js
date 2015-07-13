@@ -1,0 +1,1 @@
+angular.module('laracms.blog.service',[]);

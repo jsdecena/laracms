@@ -25,7 +25,7 @@ $app = new Illuminate\Foundation\Application;
 */
 
 $env = $app->detectEnvironment(array(
-	'dev' => array()
+	'dev' => array('179.hq.ayannah.com')
 ));
 
 /*
