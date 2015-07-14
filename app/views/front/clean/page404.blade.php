@@ -66,9 +66,9 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1>Clean Blog</h1>
+                        <h2>Sorry, the page you are looking for is not found.</h2>
                         <hr class="small">
-                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                        <span class="subheading">Try searching instead?</span>
                     </div>
                 </div>
             </div>
@@ -76,19 +76,7 @@
     </header>
     
     <!-- Main Content -->
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" ng-controller="GetPostsController">
-
-                <div class="post-preview" ng-repeat="post in postsList">
-                    <h2 class="post-title"><a href="http://localhost:8000/post/lorem-ipsum-dolor-sit-amet"> <% post.title %></a></h2>
-                    <p class="post-meta">Posted by <a href="#"><% post.author %></a> on <% post.created | date : "longDate" %></p>
-                    <div class="post-content" ng-bind-html="getHtml(post.content)"></div>
-                </div>
-                <hr>
-            </div>
-        </div>
-    </div>
+    <div class="container"><div class="row"></div></div>
 
     <hr>
 

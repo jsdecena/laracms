@@ -16,15 +16,17 @@ app.controller('GetPostsController', function($scope, $http, $sce) {
         //ITERATE ON THE FETCHED DATA
         angular.forEach(res, function(value, key) {
           
-          //MERGE THE TWO OBJECTS IN AN ARRAY
-          var object = angular.merge({}, value.post, value.author)
+          var posts =   { 
+                            created : Date.parse(value.post['created_at']),
+                            author  : value.author['firstname'],
+                            title   : value.post['title'],
+                            content : value.post['content']
+                        };
 
           //ASSIGN THE OBJECT TO SCOPE VARIABLE
-          $scope.postsList.push(object);
+          $scope.postsList.push(posts);
 
         });
-
-        console.log($scope.postsList);
         
         $scope.getHtml = function(html){
             return $sce.trustAsHtml(html);

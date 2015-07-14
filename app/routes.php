@@ -71,5 +71,5 @@ Route::resource('page',		 					'FrontPageController');
 Route::get('/', 								array('as' => 'home', 'uses' => 'IndexController@home'));*/
 
 App::missing(function($exception) { 
-    return View::make('front.clean.index');
+    return View::make('front.clean.page404');
 });
